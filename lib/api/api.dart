@@ -1,83 +1,103 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../models/collection.dart';
 import '../storage/local_storage.dart';
+import '../models/user_model.dart';
 
 const String baseUrl = 'https://dligjs37pj7q2.cloudfront.net';
 
 class Api {
   final LocalStorage localStorage = LocalStorage();
-  String? bearerToken;
+  late String _bearerToken;
 
-  // Method to make GET requests with optional query parameters and Bearer token
-  Future<dynamic> makeGet(String endpoint, {Map<String, String>? queryParams}) async {
-    Uri uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
-    final response = await http.get(
-      uri,
-      headers: _buildHeaders(),
-    );
+  Api._(this._bearerToken);
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load data: ${response.statusCode}');
-    }
+  static Future<Api> createFirstTime() async {
+    final api = Api._(" ");
+    return api;
   }
 
-  // Method to make POST requests with Bearer token
-  Future<dynamic> makePost(String endpoint, Map<String, dynamic> data) async {
-    print('making POST qeury');
-    print('endpoint:');
-    print(endpoint);
-    print('data: ');
-    print(data);
-    final response = await http.post(
-      Uri.parse('$baseUrl$endpoint'),
-      headers: _buildHeaders(),
-      body: json.encode(data),
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      print('response');
-      print(json.decode(response.body));
-
-      return json.decode(response.body);
-    } else {
-      print(json.decode(response.body));
-
-      throw Exception('Failed to post data: ${response.statusCode}');
-    }
-  }
-
-  // Private method to build headers
-  Map<String, String> _buildHeaders() {
-    final headers = {'Content-Type': 'application/json'};
-    if (bearerToken != null) {
-      headers['Authorization'] = 'Bearer $bearerToken';
-    }
-    return headers;
-  }
-
-  // Method to authenticate and get Bearer token
-  Future<void> getBearerToken() async {
-    final email = await localStorage.getEmail();
-    final password = await localStorage.getPassword();
+  static Future<Api> create() async {
+    final localStorage = LocalStorage();
+    final email = await localStorage.getEmail(); // Assume this is asynchronous
+    final password = await localStorage.getPassword(); // Assume this is asynchronous
 
     if (email != null && password != null) {
-      final data = {
-        'email': email,
-        'password': password,
-      };
-      final response = await makePost('/api/v1/auth/authenticate', data);
-      bearerToken = response['token']; // Assuming the token is returned in this format
+      final api = Api._(await _initializeBearerToken(email, password));
+      return api; // Return an instance of Api with the token
     } else {
       throw Exception('Email or password not found in local storage.');
     }
   }
 
-  Future<void> login(String email, String password) async {
-    await localStorage.saveCredentials(email, password);
-    await getBearerToken();
+  static Future<String> _initializeBearerToken(String email, String password) async {
+    final data = {
+      'email': email,
+      'password': password,
+    };
+    final response = await _makePost('/api/v1/auth/authenticate', data); // Call to authenticate
+    return response['access_token']; // Return the token
   }
 
+  Future<void> login(String email, String password) async {
+    _bearerToken = await _initializeBearerToken(email, password);
+    await localStorage.saveCredentials(email, password); // Save email for future use
+  }
+
+  static Future<dynamic> _makePost(String endpoint, Map<String, dynamic> data) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl$endpoint'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+
+    print('POST request:');
+    print('endpoint: $endpoint');
+    print('data:');
+    print(data);
+    print('response statusCode: ${response.statusCode}');
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return json.decode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to post data: ${response.statusCode}');
+    }
+  }
+
+  Future<dynamic> makeGet(String endpoint, {Map<String, String>? queryParams}) async {
+    Uri uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
+    final headers = await _buildHeaders();
+
+    final response = await http.get(uri, headers: headers);
+
+    if (response.statusCode == 200) {
+      return json.decode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  }
+
+  Future<Map<String, String>> _buildHeaders() async {
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $_bearerToken', // Use the stored token
+    };
+  }
+
+  Future<User> getUserSettings() async {
+    final responseJson = await makeGet('/api/v1/users/getSettings');
+    return User.fromJson(responseJson);
+  }
+
+  Future<List<Collection>> getAllCollections() async {
+    final responseJson = await makeGet('/api/songs/getAllCollections');
+
+    // Convert the response into a List of Collections
+    List<Collection> collections = (responseJson as List)
+        .map((json) => Collection.fromJson(json))
+        .toList();
+
+    return collections;
+  }
 }

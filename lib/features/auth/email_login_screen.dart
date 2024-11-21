@@ -23,7 +23,6 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   final passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final Api api = Api();
 
   bool isFormValid = false;
 
@@ -46,12 +45,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   }
 
   Future<void> _signIn() async {
-      try {
+    final api = await Api.createFirstTime();
+
+    try {
         final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: emailPhoneController.text,
           password: passwordController.text,
         );
-
         await api.login(emailPhoneController.text,  passwordController.text);
 
         Navigator.pushReplacement(
