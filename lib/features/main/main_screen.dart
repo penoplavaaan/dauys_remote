@@ -5,28 +5,37 @@ import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_avatar.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/playlist_screen.dart';
+import 'package:dauys_remote/features/main/playlist_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 
+import '../../api/api.dart';
+import '../../core/helpers/ImageAWS.dart';
+import '../../models/collection.dart';
+
 part 'main_screen_data.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
-  openPlaylist(Map<String, dynamic> item, BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PlaylistScreen(
-          title: item['title'],
-          image: item['image'],
-        ),
-      ),
-    );
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late Future<List<Collection>> _collections;
+
+  @override
+  void initState() {
+    super.initState();
+    _collections = Api.create().then((api) => api.getAllCollections());
   }
 
   @override
   Widget build(BuildContext context) {
+    // Get the screen width for responsive layout
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return AppScaffold(
       safeAreaTop: false,
       body: ListView(
@@ -47,52 +56,91 @@ class MainScreen extends StatelessWidget {
           ),
           const SizedBox(height: 30),
           Text(
-            'Рекомандации дня',
+            'Рекомендации дня',
             style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
           ),
           const SizedBox(height: 10),
           SizedBox(
-            height: 165,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: recommendation.length,
-              itemBuilder: (context, index) => GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () => openPlaylist(recommendation[index], context),
-                child: SizedBox(
-                  height: 165,
-                  width: 120,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Image.asset(
-                          recommendation[index]['image'],
-                          height: 120,
-                          width: 120,
-                          fit: BoxFit.cover,
+            height: MediaQuery.of(context).size.height * 0.7, // Adjust the height to the screen height
+            child: FutureBuilder<List<Collection>>(
+              future: _collections,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No Collections Available'));
+                } else {
+                  List<Collection> collections = snapshot.data!;
+                  return GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // 3 items per row
+                    ),
+                    itemCount: collections.length,
+                    itemBuilder: (context, index) {
+                      Collection collection = collections[index];
+                      return GestureDetector(
+                        onTap: () {
+                          openPlaylist(collection, context);
+                        },
+                        child: SizedBox(
+                          height: screenWidth * 0.5,
+                          width: screenWidth * 0.5, // Adjust width to 30% of screen width
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: Image.network(
+                                  ImageAWS.getImageURI(collection.collectionImageAwsUuid),
+                                  height: screenWidth * 0.35,
+                                  width: screenWidth * 0.35,  // Image will fill width of the container
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                truncateText(collection.name),
+                                style: AppStyles.magistral14w700.copyWith(color: Colors.white),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                (collection.songsCount).toSongString(),
+                                style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        recommendation[index]['title'],
-                        style: AppStyles.magistral14w700.copyWith(color: Colors.white),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        (recommendation[index]['songs'] as int).toSongString(),
-                        style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              separatorBuilder: (_, __) => const SizedBox(width: 10),
+                      );
+                    },
+                  );
+                }
+              },
             ),
           ),
         ],
       ),
     );
+  }
+
+  // Open Playlist screen (you can add more logic for navigation if needed)
+  openPlaylist(Collection collection, BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PlaylistScreenNew(
+          collection: collection,
+        ),
+      ),
+    );
+  }
+
+  String truncateText(String text, {int length = 11}) {
+    if (text.length > length) {
+      return '${text.substring(0, length)}...';
+    } else {
+      return text;
+    }
   }
 }

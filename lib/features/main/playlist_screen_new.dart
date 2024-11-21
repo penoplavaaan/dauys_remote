@@ -8,30 +8,32 @@ import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/add_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/song_preview_screen.dart';
+import 'package:dauys_remote/features/main/song_preview_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/playlist_item.dart';
+import 'package:dauys_remote/features/main/widget/playlist_item_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/models/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-part 'playlist_screen_data.dart';
+import '../../core/helpers/ImageAWS.dart';
 
-class PlaylistScreen extends StatefulWidget {
-  const PlaylistScreen({
+
+class PlaylistScreenNew extends StatefulWidget {
+  const PlaylistScreenNew({
     super.key,
-    required this.title,
-    required this.image,
+    required this.collection,
   });
 
-  final String title;
-  final String image;
+  final Collection collection;
 
   @override
-  State<PlaylistScreen> createState() => _PlaylistScreenState();
+  State<PlaylistScreenNew> createState() => _PlaylistScreenNewState();
 }
 
-class _PlaylistScreenState extends State<PlaylistScreen> {
+class _PlaylistScreenNewState extends State<PlaylistScreenNew> {
   final double percent = 0.2;
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
@@ -69,7 +71,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             width: 32,
                             alignment: Alignment.center,
                             child: const Icon(
-                              Icons.chevron_left, // TODO KANTUR: change to asset icon
+                              Icons.chevron_left,
                               size: 20,
                               color: AppColors.white,
                             ),
@@ -84,7 +86,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                               child: AspectRatio(
                                 aspectRatio: 1,
                                 child: Image.network(
-                                  widget.image,
+                                  ImageAWS.getImageURI(widget.collection.collectionImageAwsUuid),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -103,7 +105,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               ),
               const SizedBox(height: 16),
               Text(
-                widget.title,
+                truncateText(widget.collection.name), // Truncated title
                 style: AppStyles.magistral30w700.copyWith(color: AppColors.white),
               ),
               const SizedBox(height: 30),
@@ -111,11 +113,19 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                 child: ListView.separated(
                   padding: const EdgeInsets.only(left: 16, right: 16, bottom: 30),
                   shrinkWrap: true,
-                  itemCount: playlist.length,
-                  itemBuilder: (context, index) => PlaylistItem(
-                    image: playlist[index]['image'],
-                    title: playlist[index]['title'],
-                    name: playlist[index]['name'],
+                  itemCount: widget.collection.songsCount,
+                  itemBuilder: (context, index) => PlaylistItemNew(
+                    image: ImageAWS.getImageURI(widget.collection.songs[index].songImageUri),
+                    title: widget.collection.songs[index].genre,
+                    name: widget.collection.songs[index].name,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SongPreviewScreenNew(songID: widget.collection.songs[index].id.toString()),
+                        ),
+                      );
+                    },
                   ),
                   separatorBuilder: (_, __) => const SizedBox(height: 12),
                 ),
@@ -128,7 +138,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SongPreviewScreen(),
+                  builder: (context) => const SongPreviewScreenNew(songID: '1',),
                 ),
               );
             },
@@ -151,16 +161,11 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: Image.network(
-                            widget.image,
+                            ImageAWS.getImageURI(widget.collection.collectionImageAwsUuid),
                             fit: BoxFit.cover,
                             height: 40,
                             width: 40,
                           ),
-                          // child: Image.asset(
-                          //   widget.image,
-                          //   height: 40,
-                          //   width: 40,
-                          // ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
@@ -169,12 +174,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.title,
+                                truncateText(widget.collection.name),
                                 style: AppStyles.magistral14w500.copyWith(color: AppColors.white),
                               ),
                               const SizedBox(height: 3),
                               Text(
-                                widget.title,
+                                truncateText(widget.collection.songsCount.toString()),
                                 style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
                               ),
                             ],
@@ -216,4 +221,13 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
       ),
     );
   }
+
+  String truncateText(String text, {int length = 6}) {
+    if (text.length > length) {
+      return '${text.substring(0, length)}...';
+    } else {
+      return text;
+    }
+  }
+
 }

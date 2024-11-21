@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../models/collection.dart';
+import '../models/song_new.dart';
 import '../storage/local_storage.dart';
 import '../models/user_model.dart';
 
-const String baseUrl = 'https://dligjs37pj7q2.cloudfront.net';
 
 class Api {
   final LocalStorage localStorage = LocalStorage();
   late String _bearerToken;
+  static const String baseUrl = 'https://dligjs37pj7q2.cloudfront.net';
 
   Api._(this._bearerToken);
 
@@ -71,7 +72,16 @@ class Api {
 
     final response = await http.get(uri, headers: headers);
 
+
+    print('GET request:');
+    print('endpoint: $endpoint');
+    print('queryParams:');
+    print(queryParams);
+    print('response statusCode: ${response.statusCode}');
     if (response.statusCode == 200) {
+
+      print('response:');
+      print(response.body);
       return json.decode(utf8.decode(response.bodyBytes));
     } else {
       throw Exception('Failed to load data: ${response.statusCode}');
@@ -99,5 +109,12 @@ class Api {
         .toList();
 
     return collections;
+  }
+
+  Future<SongNew> getSongById(int id) async {
+    final responseJson = await makeGet('/api/songs/$id');
+    final songJson = responseJson['songs'][0];
+    final songTextResponse = await makeGet(songJson['songTextUri']);
+    return SongNew.fromJsonWithText(songJson, songTextResponse['text']);
   }
 }
