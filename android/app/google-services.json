@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "966936741628",
+    "firebase_url": "https://novo-team.firebaseio.com",
+    "project_id": "novo-team",
+    "storage_bucket": "novo-team.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966936741628:android:96154b04bd5e18935fb979",
+        "android_client_info": {
+          "package_name": "com.example.dauys_remote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966936741628-2if18s35iqvtbh3g5t1ie9n5qpvnk7c4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dauys_remote",
+            "certificate_hash": "a6d482dffdd110d1fc031c39a399928b41409944"
+          }
+        },
+        {
+          "client_id": "966936741628-gbmr4vn6mslu39ujin8ro5l6vvv7bdcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPAmTdFG9D_gHykGWorRKnw2Bg5D_j4AQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966936741628-gbmr4vn6mslu39ujin8ro5l6vvv7bdcu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "966936741628-cgltdl9laiv11h9tdliu3qsc4h3onv3s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dauysremote.dauysRemote1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966936741628:android:edc53d107f8bac0f5fb979",
+        "android_client_info": {
+          "package_name": "com.vjet.novo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966936741628-gbmr4vn6mslu39ujin8ro5l6vvv7bdcu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPAmTdFG9D_gHykGWorRKnw2Bg5D_j4AQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966936741628-gbmr4vn6mslu39ujin8ro5l6vvv7bdcu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "966936741628-cgltdl9laiv11h9tdliu3qsc4h3onv3s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.dauysremote.dauysRemote1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

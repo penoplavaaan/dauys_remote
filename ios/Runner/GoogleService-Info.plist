@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>966936741628-en7ho85et0ovu2eia6ek96el8h8gg92t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.966936741628-en7ho85et0ovu2eia6ek96el8h8gg92t</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>966936741628-2if18s35iqvtbh3g5t1ie9n5qpvnk7c4.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBOm8NUj9cjK9Ca2UinLvXS4_8U0U-F2b0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>966936741628</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.dauysRemote</string>
+	<key>PROJECT_ID</key>
+	<string>novo-team</string>
+	<key>STORAGE_BUCKET</key>
+	<string>novo-team.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:966936741628:ios:d471996b30e77f6b5fb979</string>
+	<key>DATABASE_URL</key>
+	<string>https://novo-team.firebaseio.com</string>
+</dict>
+</plist>
