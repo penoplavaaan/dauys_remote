@@ -9,9 +9,12 @@ import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:stomp_dart_client/stomp_dart_client.dart';
 
 class SingScreenNew extends StatefulWidget {
-  const SingScreenNew({super.key});
+  final String songID;
+
+  const SingScreenNew({Key? key, required this.songID}) : super(key: key);
 
   @override
   State<SingScreenNew> createState() => _SingScreenNewState();
@@ -50,6 +53,22 @@ class _SingScreenNewState extends State<SingScreenNew> {
 
   @override
   Widget build(BuildContext context) {
+    StompClient client = StompClient(
+        config: StompConfig.sockJS(
+            url: 'https://dligjs37pj7q2.cloudfront.net/im',
+            onConnect: ((StompFrame smth) {
+              print('connected');
+              print(smth);
+            }),
+            onStompError: ((StompFrame smth) {
+              print('not connected');
+              print(smth);
+            }),
+        )
+    );
+    client.activate();
+
+
     return Column(
       children: [
         const TopSpacer(),

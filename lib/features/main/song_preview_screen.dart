@@ -6,6 +6,7 @@ import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/sing_screen.dart';
+import 'package:dauys_remote/features/main/sing_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -275,7 +276,7 @@ class _SongPreviewScreenState extends State<SongPreviewScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SingScreen(),
+                  builder: (context) => const SingScreenNew(songID: '5',),
                 ),
               );
             },

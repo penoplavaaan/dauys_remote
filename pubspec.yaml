@@ -25,6 +25,7 @@ dependencies:
   hive_flutter: ^1.1.0
   flutter_facebook_auth: ^7.1.1
   google_sign_in: ^6.2.2
+  stomp_dart_client: ^2.1.0
 
 dev_dependencies:
   flutter_test:
