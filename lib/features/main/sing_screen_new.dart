@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/constants/app_image.dart';
 import 'package:dauys_remote/core/constants/app_svg.dart';
@@ -11,6 +15,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
+import '../../socket/socket_service.dart';
+
 class SingScreenNew extends StatefulWidget {
   final String songID;
 
@@ -21,7 +27,23 @@ class SingScreenNew extends StatefulWidget {
 }
 
 class _SingScreenNewState extends State<SingScreenNew> {
+  late SocketService client;
+
+
+  @override
+  void initState() {
+    super.initState();
+    client = SocketService();
+  }
+
+  @override
+  void dispose() {
+    client.deactivate();
+    super.dispose();
+  }
+
   final controller = PageController();
+
 
   Future<T?> bottomSheetBuilder<T>({required List<Widget> children}) => showModalBottomSheet(
         context: context,
@@ -53,22 +75,6 @@ class _SingScreenNewState extends State<SingScreenNew> {
 
   @override
   Widget build(BuildContext context) {
-    StompClient client = StompClient(
-        config: StompConfig.sockJS(
-            url: 'https://dligjs37pj7q2.cloudfront.net/im',
-            onConnect: ((StompFrame smth) {
-              print('connected');
-              print(smth);
-            }),
-            onStompError: ((StompFrame smth) {
-              print('not connected');
-              print(smth);
-            }),
-        )
-    );
-    client.activate();
-
-
     return Column(
       children: [
         const TopSpacer(),
