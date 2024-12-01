@@ -12,12 +12,9 @@ import 'package:dauys_remote/features/profile/history_screen.dart';
 import 'package:dauys_remote/features/profile/favorites_screen.dart';
 import 'package:dauys_remote/features/profile/my_data_screen.dart';
 import 'package:dauys_remote/features/profile/my_playlists_screen.dart';
-import 'package:dauys_remote/features/profile/payments_screen.dart';
 import 'package:dauys_remote/features/profile/settings_screen.dart';
-import 'package:dauys_remote/features/profile/subscriptions_screen.dart';
 import 'package:dauys_remote/features/profile/widget/profile_tile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../api/api.dart';
 import '../../models/user_model.dart';
@@ -43,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<User> fetchUserSettings() async {
     try {
       final api = await Api.create();
-      return await api.getUserSettings();
+      return await api.getUserFullData();
     } catch (e) {
       // Handle error, maybe show a dialog or a message
       print('Error fetching user settings: $e');
@@ -110,11 +107,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   future: userFuture, // Use the future from initState
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData) {
-                      return Center(child: Text('No user data found'));
+                      return const Center(child: Text('No user data found'));
                     }
 
                     final user = snapshot.data!; // Get user data

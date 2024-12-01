@@ -12,9 +12,7 @@ import 'package:dauys_remote/features/profile/settings_change_password_screen.da
 import 'package:dauys_remote/features/profile/settings_devices_enter_code_screen.dart';
 import 'package:dauys_remote/features/profile/settings_devices_scan_screen.dart';
 import 'package:dauys_remote/features/profile/settings_devises_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({

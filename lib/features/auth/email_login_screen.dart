@@ -3,7 +3,6 @@ import 'package:dauys_remote/core/constants/regex.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/core/widget/app_text_input.dart';
-import 'package:dauys_remote/features/auth/new_account_screen2.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
 import 'package:dauys_remote/features/auth/widget/password_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';

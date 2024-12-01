@@ -1,15 +1,11 @@
-import 'dart:ffi' as ffi;
 
 import 'package:blur/blur.dart';
 import 'package:dauys_remote/core/constants/app_svg.dart';
-import 'package:dauys_remote/core/constants/app_tmp_image.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/add_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
-import 'package:dauys_remote/features/main/song_preview_screen.dart';
 import 'package:dauys_remote/features/main/song_preview_screen_new.dart';
-import 'package:dauys_remote/features/main/widget/playlist_item.dart';
 import 'package:dauys_remote/features/main/widget/playlist_item_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/models/collection.dart';

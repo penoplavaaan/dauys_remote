@@ -29,34 +29,6 @@ class _MyDataScreenState extends State<MyDataScreen> {
         children: [
           const TopSpacer(),
           const AuthTopPanel(title: 'Мои данные'),
-          const SizedBox(height: 50),
-          const Center(
-            child: AppAvatar(
-              asset: AppTmpImage.avatar,
-              size: 120,
-            ),
-          ),
-          const SizedBox(height: 10),
-          Center(
-            child: GestureDetector(
-              onTap: () {},
-              behavior: HitTestBehavior.opaque,
-              child: Container(
-                height: 30,
-                width: 148,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppColors.white.withOpacity(.1),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 7),
-                alignment: Alignment.center,
-                child: Text(
-                  'Изменить фото',
-                  style: AppStyles.magistral14w500.copyWith(color: AppColors.white),
-                ),
-              ),
-            ),
-          ),
           const SizedBox(height: 30),
           const MyDataCard(
             title: 'Ваш логин',

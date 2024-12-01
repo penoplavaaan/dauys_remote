@@ -76,10 +76,10 @@ class Api {
     print('GET request:');
     print('endpoint: $endpoint');
     print('queryParams:');
+    print('token :$_bearerToken');
     print(queryParams);
     print('response statusCode: ${response.statusCode}');
     if (response.statusCode == 200) {
-
       print('response:');
       print(response.body);
       return json.decode(utf8.decode(response.bodyBytes));
@@ -116,5 +116,17 @@ class Api {
     final songJson = responseJson['songs'][0];
     final songTextResponse = await makeGet(songJson['songTextUri']);
     return SongNew.fromJsonWithText(songJson, songTextResponse['text']);
+  }
+
+  Future<User> getUserFullData() async {
+    final responseJson = await makeGet('/api/v1/users/getUser');
+    final newUser = User.fromJson(responseJson);
+
+    // Fetch existing user settings
+    final existingUser = await getUserSettings();
+
+    // Merge existing user settings with new data
+    final mergedUser = existingUser.merge(newUser);
+    return mergedUser;
   }
 }

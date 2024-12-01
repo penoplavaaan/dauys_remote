@@ -3,6 +3,7 @@ abstract class AppSvg {
   static const String playMini = 'assets/svg/play_mini.svg';
   static const String star = 'assets/svg/star.svg';
   static const String playBig = 'assets/svg/play_big.svg';
+  static const String pauseBig = 'assets/svg/pause_big.svg';
   static const String skipPrev = 'assets/svg/skip_prev.svg';
   static const String skipNext = 'assets/svg/skip_next.svg';
 

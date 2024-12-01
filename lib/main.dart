@@ -2,7 +2,6 @@ import 'package:dauys_remote/features/gateway/gateway_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'features/main/main_screen.dart';
 import 'firebase_options.dart';
 
 import 'features/auth/auth_geateway_screen.dart';

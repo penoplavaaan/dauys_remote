@@ -1,21 +1,26 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/constants/app_svg.dart';
-import 'package:dauys_remote/core/constants/app_tmp_image.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
-import 'package:dauys_remote/features/main/sing_screen.dart';
 import 'package:dauys_remote/features/main/sing_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../api/api.dart';
+import '../../core/constants/app_image.dart';
 import '../../core/helpers/ImageAWS.dart';
+import '../../core/theme/app_gradients.dart';
 import '../../models/song_new.dart';
+import '../../models/user_model.dart';
+import '../../socket/socket_service.dart';
 
 class SongPreviewScreenNew extends StatefulWidget {
   final String songID; // Add the songID parameter
@@ -31,12 +36,277 @@ class SongPreviewScreenNew extends StatefulWidget {
 
 class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
   late Future<SongNew> _song; // Add a future to fetch the song
+  late User _user; // Add a future to fetch the song
+  late SongNew _songFinal;
+  final controller = PageController();
+  late SocketService client;
+
+  int _micCount = 1;
+  late Widget _connectRegion;
+  late Widget _connectToBox;
+  late Widget _player;
+
+  bool showChooseMicsRegion = true;
+  bool showPlayer = false;
+  bool showConnectToBox = false;
+
+  bool _isPlaying = false;
+  int _progressInSec = 0;
+
+  @override
+  void dispose() {
+    try{
+      client.deactivate();
+    }catch(e){
+      print('Error deactivating socket client');
+    }
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
     // Fetch the song data using the provided songID
-    _song = Api.create().then((api) => api.getSongById(int.parse(widget.songID)));
+    _song = Api.create().then((api) => api.getSongById(int.parse(widget.songID))).then((sng) => _songFinal = sng);
+    Api.create().then((api) => api.getUserFullData()).then((user) => _user = user);
+
+    _connectRegion = AppButton(
+      title: 'Выбрать режим',
+      onTap: () async {
+        bottomSheetBuilder(
+          children: [
+            Expanded(
+              child: PageView(
+                controller: controller,
+                onPageChanged: (page) {
+                  if(page == 0){
+                    _micCount = 1;
+                  }else{
+                    _micCount= 2;
+                  }
+                  print('page');
+                  print(page);
+                },
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Image.asset(
+                            AppImage.mic1,
+                            fit: BoxFit.fill,
+                            // width: 180,
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                '1 микрофон',
+                                style: AppStyles.magistral25w500.copyWith(color: AppColors.white),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Классический режим',
+                                style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
+                              ),
+                              const SizedBox(height: 350),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: AppButton(
+                                  title: 'Начать',
+                                  onTap: ()  {
+                                    setState(() {
+                                      showChooseMicsRegion = false;
+                                      showConnectToBox = true;
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: [
+                          Image.asset(
+                            AppImage.mic2,
+                            fit: BoxFit.cover,
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '2 микрофона',
+                                style: AppStyles.magistral25w500.copyWith(color: AppColors.white),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Режим соревнования с друзьями!',
+                                style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
+                              ),
+                              const SizedBox(height: 350),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 16),
+                                child: AppButton(
+                                  title: 'Начать',
+                                  onTap: ()  {
+                                    setState(() {
+                                      showChooseMicsRegion = false;
+                                      showConnectToBox = true;
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SmoothPageIndicator(
+              controller: controller,
+              count: 2,
+              effect: ExpandingDotsEffect(
+                dotColor: AppColors.white.withOpacity(0.2),
+                activeDotColor: AppColors.white,
+                dotWidth: 10,
+                strokeWidth: 20,
+                dotHeight: 10,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    _connectToBox =  AppButton(
+      title: 'Подключить приставку',
+      onTap: ()  async {
+        bottomSheetBuilder(
+          children: [
+            Text(
+              'Поиск устройств',
+              style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
+            ),
+            const SizedBox(height: 20),
+            GestureDetector(
+              onTap: () => Navigator.of(context).pop(1),
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: AppColors.backgroundButtonGradient1.withOpacity(0.05),
+                  shape: BoxShape.circle,
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundButtonGradient1.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundButtonGradient1.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundButtonGradient1.withOpacity(0.3),
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Поиск Dauys Karaoke Box',
+              style: AppStyles.magistral14w400.copyWith(color: AppColors.white.withOpacity(0.4)),
+            ),
+          ],
+        );
+
+        bool isConnected = false;
+
+        client = SocketService(
+          _user,
+          _songFinal,
+          _micCount
+        );
+        await client.configure();
+
+        for(int i = 0; i <=5; i++) {
+          sleep(const Duration(seconds: 3));
+          print('trying to connect from another class');
+          if(client.isConnected()) {
+            isConnected = true;
+            print('connected from another class');
+            break;
+          }
+          print('client is not connected');
+        }
+
+        if (isConnected) {
+          setState(() {
+            showChooseMicsRegion = false;
+            showPlayer = true;
+            showConnectToBox = false;
+          });
+          await Future.delayed(const Duration(seconds: 4));
+          Navigator.pop(context);
+        }
+      },
+    );
+    _player = Row(
+          children: [
+            const Spacer(),
+            const SizedBox(width: 50),
+            GestureDetector(
+              onTap: () {
+                if(_isPlaying){
+                  client.onPause();
+                }
+                if(!_isPlaying && _progressInSec != 0){
+                  client.onResume();
+                }
+                if(!_isPlaying && _progressInSec == 0){
+                  client.onPlay();
+                  _progressInSec = 1;
+                }
+                setState(() {
+                  _isPlaying = !_isPlaying;
+                });
+                print('Playing (after touch:) $_isPlaying');
+              },
+              child: _isPlaying
+                  ? SvgPicture.asset(
+                  AppSvg.pauseBig,
+                  height: 60,
+                  width: 60,
+                )
+                : SvgPicture.asset(
+                  AppSvg.playBig,
+                  height: 60,
+                  width: 60,
+                ),
+            ),
+            const SizedBox(width: 50),
+            const Spacer(),
+          ],
+        );
   }
 
   @override
@@ -47,13 +317,13 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
         future: _song, // Use the future for fetching the song
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           }
 
           final song = snapshot.data!; // Get the song data
@@ -216,17 +486,10 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  AppButton(
-                    title: 'Спеть',
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SingScreenNew(songID: '5',),
-                        ),
-                      );
-                    },
-                  ),
+                  const SizedBox(height: 20),
+                  if(showChooseMicsRegion) _connectRegion,
+                  if(showConnectToBox) _connectToBox,
+                  if (showPlayer) _player,
                   // Row(
                   //   children: [
                   //     const Spacer(),
@@ -307,6 +570,35 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
 
     return formatted;
   }
+
+  Future<T?> bottomSheetBuilder<T>({required List<Widget> children}) => showModalBottomSheet(
+    context: context,
+    barrierColor: AppColors.black.withOpacity(0.3),
+    backgroundColor: Colors.transparent,
+    scrollControlDisabledMaxHeightRatio: 1,
+    builder: (context) => Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+        gradient: AppGradients.darkGradientVertical,
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 10,
+            color: AppColors.black.withOpacity(.1),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.only(top: 50, bottom: 30, left: 16, right: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: children,
+      ),
+    ),
+  );
+
 }
 
 

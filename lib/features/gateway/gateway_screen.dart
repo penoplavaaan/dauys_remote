@@ -5,7 +5,6 @@ import 'package:dauys_remote/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../auth/auth_geateway_screen.dart';
-import '../profile/settings_screen.dart';
 import '../search/search_screen.dart';
 
 class GateWayScreen extends StatefulWidget {

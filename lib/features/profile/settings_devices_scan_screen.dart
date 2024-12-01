@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
@@ -44,13 +43,13 @@ class _SettingsDevicesScanScreenState extends State<SettingsDevicesScanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(
+    return const AppScaffold(
       safeAreaTop: false,
       disableBackgroundColorSpots: true,
       body: Column(
         children: [
-          const TopSpacer(),
-          const AuthTopPanel(title: 'Сканировать QR'),
+          TopSpacer(),
+          AuthTopPanel(title: 'Сканировать QR'),
           Expanded(
             child: Text('123'),
           ),

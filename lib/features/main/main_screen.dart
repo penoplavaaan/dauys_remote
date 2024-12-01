@@ -4,7 +4,6 @@ import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_avatar.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
-import 'package:dauys_remote/features/main/playlist_screen.dart';
 import 'package:dauys_remote/features/main/playlist_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';

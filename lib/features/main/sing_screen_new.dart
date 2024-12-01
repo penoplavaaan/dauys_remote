@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
 import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/constants/app_image.dart';
@@ -13,14 +11,16 @@ import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:stomp_dart_client/stomp_dart_client.dart';
 
+import '../../models/song_new.dart';
+import '../../models/user_model.dart';
 import '../../socket/socket_service.dart';
 
 class SingScreenNew extends StatefulWidget {
-  final String songID;
+  final SongNew song;
+  final User user;
 
-  const SingScreenNew({Key? key, required this.songID}) : super(key: key);
+  const SingScreenNew({super.key, required this.song, required this.user});
 
   @override
   State<SingScreenNew> createState() => _SingScreenNewState();
@@ -33,7 +33,11 @@ class _SingScreenNewState extends State<SingScreenNew> {
   @override
   void initState() {
     super.initState();
-    client = SocketService();
+    client = SocketService(
+      widget.user,
+      widget.song,
+      2
+    );
   }
 
   @override

@@ -1,4 +1,3 @@
-import 'dart:ffi' as ffi;
 
 import 'package:blur/blur.dart';
 import 'package:dauys_remote/core/constants/app_svg.dart';
@@ -10,7 +9,6 @@ import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/song_preview_screen.dart';
 import 'package:dauys_remote/features/main/widget/playlist_item.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
-import 'package:dauys_remote/models/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

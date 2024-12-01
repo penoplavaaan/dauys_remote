@@ -1,14 +1,39 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:dauys_remote/api/api.dart';
+import 'package:dauys_remote/models/user_model.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 
-class SocketService {
-  late StompClient client;
+import '../models/song_new.dart';
 
-  SocketService() {
+class SocketService {
+  static const String incomingMessageTypeHandshake = 'INCOMING_HANDSHAKE';
+
+  static const String messageTypeHandshake = 'HANDSHAKE';
+  static const String messageTypeGoodbye = 'GOODBYE';
+  static const String messageTypePlay = 'PLAY';
+
+  static const String commandTypePlay = 'play';
+  static const String commandTypeBeforePlay = 'beforePlay';
+  static const String commandTypePause = 'pause';
+  static const String commandTypeStop = 'stop';
+  static const String commandTypeHandshake= 'handshake';
+  static const String commandTypeGoodbye = 'handshake';
+  static const String commandTypeResume = 'resume';
+
+  late StompClient client;
+  User user;
+  SongNew song;
+  bool _isConnected = false;
+  int deviceId = 0;
+  int micCount = 1;
+
+  SocketService(this.user,this.song, this.micCount);
+
+  Future<void> configure() async{
     client = StompClient(
       config: StompConfig.sockJS(
-          url: 'https://dligjs37pj7q2.cloudfront.net/im',
+          url: '${Api.baseUrl}/im',
           onConnect: onConnect,
           beforeConnect: () async {
             print('waiting to connect...');
@@ -31,26 +56,141 @@ class SocketService {
     client.deactivate();
   }
 
+  bool isConnected() {
+    return client.isActive;
+  }
+
   void onConnect(StompFrame frame) {
     print('connected! ');
 
     client.subscribe(
-      destination: '/user/1/msg',
+      destination: '/user/${user.id}/msg',
       callback: (StompFrame frame) {
-        print('Subscription received');
-        print(frame.body);
-        print(utf8.decode(frame.binaryBody ?? []));
-        print(frame.command);
+        parseIncomingMessage(utf8.decode(frame.binaryBody ?? []) );
       },
     );
 
-    Timer.periodic(const Duration(seconds: 2), (_) {
-      client.send(
-        destination: '/user/1/msg',
-        body: jsonEncode({"a": 123}),
-      );
+    sendHandshake();
+    mockSuccessHandshake();
+    // beforePlay();
+  }
+
+  parseIncomingMessage(String message){
+    print('Subscription received');
+    var _mes = jsonDecode(message);
+    print(_mes);
+
+    if(
+      (_mes['message']['type'] == incomingMessageTypeHandshake)
+      && (_mes['message']['command'] == commandTypeHandshake)
+    ) {
+      print('handshake success');
+      _isConnected = true;
+      deviceId = _mes['message']['deviceId'] ?? 0;
+    }
+  }
+
+  void send(Object body){
+    client.send(
+      destination: '/user/${user.id}/msg',
+      body: jsonEncode(body),
+    );
+  }
+
+  void sendHandshake(){
+    send({
+      'message': {
+        'type': messageTypeHandshake,
+        'command': commandTypeHandshake
+      },
+      'data': {
+        'micCount': micCount
+      }
     });
   }
 
 
+  void sendGoodbye(){
+    send({
+      'message': {
+        'type': messageTypeGoodbye,
+        'command': commandTypeGoodbye
+      },
+      'data': null
+    });
+  }
+
+  void beforePlay(){
+    send({
+      'message': {
+        'type': messageTypePlay,
+        'command': commandTypeBeforePlay
+      },
+      'data': {
+        'songId' : song.id
+      }
+    });
+  }
+
+  void onPlay(){
+    send({
+      'message': {
+        'type': messageTypePlay,
+        'command': commandTypePlay
+      },
+      'data': {
+        'songId' : song.id
+      }
+    });
+  }
+
+  void onResume(){
+    send({
+      'message': {
+        'type': messageTypePlay,
+        'command': commandTypeResume
+      },
+      'data': {
+        'songId' : song.id
+      }
+    });
+  }
+
+  void onPause(){
+    send({
+      'message': {
+        'type': messageTypePlay,
+        'command': commandTypePause
+      },
+      'data': {
+        'songId' : song.id
+      }
+    });
+  }
+
+  void onStop(){
+    send({
+      'message': {
+        'type': messageTypePlay,
+        'command': commandTypeStop
+      },
+      'data': {
+        'songId' : song.id
+      }
+    });
+  }
+
+
+  //mock part
+  void mockSuccessHandshake (){
+    send({
+      'message': {
+        'type': incomingMessageTypeHandshake,
+        'command': commandTypeHandshake
+      },
+      'data': {
+        'deviceId' : 1455432
+      }
+    });
+  }
 }
