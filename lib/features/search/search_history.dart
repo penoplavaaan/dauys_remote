@@ -30,52 +30,6 @@ class _SearchHistoryState extends State<SearchHistory> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Ваши жанровые открытия',
-            style: AppStyles.magistral20w500.copyWith(color: AppColors.white.withOpacity(0.5)),
-          ),
-        ),
-        const SizedBox(height: 6),
-        SizedBox(
-          height: 160,
-          child: ListView.separated(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: recommendation.length,
-            itemBuilder: (context, index) => Container(
-              margin: index == 0 ? const EdgeInsets.only(left: 16) : null,
-              height: 160,
-              width: 120,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        recommendation[index]['image'],
-                        height: 160,
-                        width: 120,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: Text(
-                        recommendation[index]['title'],
-                        style: AppStyles.magistral12w500.copyWith(color: AppColors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            separatorBuilder: (_, __) => const SizedBox(width: 6),
-          ),
-        ),
-        const SizedBox(height: 30),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text(
             'Вы недавно искали',
             style: AppStyles.magistral20w500.copyWith(color: AppColors.white.withOpacity(0.5)),
           ),
