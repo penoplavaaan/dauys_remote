@@ -38,7 +38,7 @@ class SettingsDevisesScreenState extends State<SettingsDevisesScreen> {
             child: ListView.separated(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: 0,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () => setState(() {
                   selectedLanguage = index;

@@ -47,10 +47,10 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     final api = await Api.createFirstTime();
 
     try {
-        final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: emailPhoneController.text,
-          password: passwordController.text,
-        );
+        // final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        //   email: emailPhoneController.text,
+        //   password: passwordController.text,
+        // );
         await api.login(emailPhoneController.text,  passwordController.text);
 
         Navigator.pushReplacement(
@@ -62,10 +62,10 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
           print('The password provided is too weak.');
         } else if (e.code == 'email-already-in-use') {
           try {
-            final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-              email: emailPhoneController.text,
-              password: passwordController.text,
-            );
+            // final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+            //   email: emailPhoneController.text,
+            //   password: passwordController.text,
+            // );
 
             await api.login(emailPhoneController.text,  passwordController.text);
             print('we are logged in');
@@ -111,10 +111,11 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                     ),
                     const SizedBox(height: 30),
                     AppButton(
-                      title: 'Войти1',
+                      title: 'Войти',
                       width: 130,
                       onTap: isFormValid
                           ? () {
+                          print('click');
                           _signIn();
                         }
                           : null,

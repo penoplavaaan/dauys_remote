@@ -9,6 +9,7 @@ import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 
 import '../../api/api.dart';
+import '../../core/constants/app_image.dart';
 import '../../core/helpers/ImageAWS.dart';
 import '../../models/collection.dart';
 
@@ -45,10 +46,10 @@ class _MainScreenState extends State<MainScreen> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const AppAvatar(asset: AppTmpImage.avatar, size: 46),
+              const AppAvatar(asset: AppImage.icon, size: 46),
               const SizedBox(width: 16),
               Text(
-                'N.Jordan',
+                'Dauys',
                 style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
               ),
             ],

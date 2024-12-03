@@ -23,13 +23,12 @@ class _GateWayScreenState extends State<GateWayScreen> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
   ];
-  final _pages = const [
-    MainScreen(),
-    SearchScreen(),
-    ProfileScreen(),
-    AuthGeatewayScreen(),
+
+  final List<Widget Function()> _pageBuilders = [
+        () => const MainScreen(),
+        () => const SearchScreen(),
+        () => const ProfileScreen(),
   ];
 
   @override
@@ -43,18 +42,7 @@ class _GateWayScreenState extends State<GateWayScreen> {
         body: Column(
           children: [
             Expanded(
-              child: IndexedStack(
-                index: currentIndex,
-                children: List.generate(
-                  _keys.length,
-                      (index) => Navigator(
-                    key: _keys[index],
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                      builder: (context) => _pages[index],
-                    ),
-                  ),
-                ),
-              ),
+              child: _pageBuilders[currentIndex]()
             ),
             AppBottomNavigationBar(
               onChange: (int index) {

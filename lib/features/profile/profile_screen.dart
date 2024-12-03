@@ -12,12 +12,16 @@ import 'package:dauys_remote/features/profile/history_screen.dart';
 import 'package:dauys_remote/features/profile/favorites_screen.dart';
 import 'package:dauys_remote/features/profile/my_data_screen.dart';
 import 'package:dauys_remote/features/profile/my_playlists_screen.dart';
+import 'package:dauys_remote/features/profile/settings_change_password_screen.dart';
 import 'package:dauys_remote/features/profile/settings_screen.dart';
 import 'package:dauys_remote/features/profile/widget/profile_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import '../../api/api.dart';
+import '../../core/constants/app_image.dart';
 import '../../models/user_model.dart';
+import '../../storage/local_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -89,12 +93,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                     alignment: Alignment.center,
-                    child: Image.asset(
-                      AppIcons.settings,
-                      height: 14,
-                      width: 14,
-                      color: AppColors.white,
-                      fit: BoxFit.cover,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const SettingsChangePasswordScreen()),
+                        );
+                      },
+                      behavior: HitTestBehavior.opaque,
+                       child: Image.asset(
+                        AppIcons.settings,
+                        height: 14,
+                        width: 14,
+                        color: AppColors.white,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -155,7 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const AppAvatar(
-                              asset: AppTmpImage.avatar,
+                              asset: AppImage.icon,
                               size: 120,
                             ),
                             const SizedBox(height: 20),
@@ -208,7 +221,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileTile(
                           title: 'Избранное',
                           icon: AppIcons.starOutlined,
-                          page: FavoritesScreen(),
+                          page: null
+                          // page: FavoritesScreen(),
                         ),
                         SizedBox(width: 16),
                       ],
@@ -220,13 +234,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileTile(
                           title: 'История',
                           icon: AppIcons.history,
-                          page: HistoryScreen(),
+                          page: null
+                          // page: HistoryScreen(),
+
                         ),
                         SizedBox(width: 10),
                         ProfileTile(
                           title: 'Мои плейлисты',
                           icon: AppIcons.record,
-                          page: MyPlaylistsScreen(),
+                          page: null
+                          // page: MyPlaylistsScreen(),
                         ),
                         SizedBox(width: 16),
                       ],
@@ -245,7 +262,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () async {
+                        final localStorage = LocalStorage();
+                        await localStorage.clearCredentials();
+                        if (context.mounted){
+                          Phoenix.rebirth(context);
+                        }
+                      },
                       behavior: HitTestBehavior.opaque,
                       child: Row(
                         children: [
