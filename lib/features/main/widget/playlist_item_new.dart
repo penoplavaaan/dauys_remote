@@ -15,6 +15,7 @@ class PlaylistItemNew extends StatelessWidget {
     required this.name,
     this.showAddToFavorite = false,
     this.onTap,
+    this.showSingButton = false,
   });
 
   final String image;
@@ -22,6 +23,7 @@ class PlaylistItemNew extends StatelessWidget {
   final String name;
   final bool showAddToFavorite;
   final VoidCallback? onTap; // This is the onTap callback type
+  final bool showSingButton;
 
   @override
   Widget build(BuildContext context) {
@@ -68,17 +70,19 @@ class PlaylistItemNew extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          GradientButton(
-            title: 'Спеть',
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SingScreen(),
-                ),
-              );
-            },
-          ),
+          if(showSingButton) ...[
+            GradientButton(
+              title: 'Спеть',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SingScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
           if (showAddToFavorite) ...[
             const SizedBox(width: 4),
             GradientOverlay(

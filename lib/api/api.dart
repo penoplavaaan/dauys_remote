@@ -216,4 +216,14 @@ class Api {
     }
     return true;
   }
+
+  Future<dynamic> fullTextSearch(String input) async {
+    final queryParams = {
+      'input': input,
+      'sortBy': 'DEFAULT',
+      'sortMethod': 'ASC',
+      'size': '10',
+    };
+    return await _makeGet('/api/v1/search/fullTextSearch', queryParams: queryParams);
+  }
 }

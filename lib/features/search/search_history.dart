@@ -4,6 +4,8 @@ import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/features/main/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../storage/local_storage.dart';
+
 const List<String> _history = [
   'The Limba',
   'Zoloto',
@@ -21,6 +23,22 @@ class SearchHistory extends StatefulWidget {
 }
 
 class _SearchHistoryState extends State<SearchHistory> {
+  List<String> _history = [];
+  final LocalStorage localStorage = LocalStorage();
+
+  @override
+  void initState() {
+    localStorage.getSearchHistory().then((history){
+      setState(() {
+        _history = history;
+      });
+    });
+    print('SearchHistory rebuilt');
+    super.initState();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
