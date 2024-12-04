@@ -6,17 +6,9 @@ import 'package:flutter/cupertino.dart';
 
 import '../../storage/local_storage.dart';
 
-const List<String> _history = [
-  'The Limba',
-  'Zoloto',
-  'Lil pump',
-  'Lil xan',
-  'Morgenshtern',
-  'Скриптонит',
-];
-
 class SearchHistory extends StatefulWidget {
-  const SearchHistory({super.key});
+  final Function(String) callback;
+  const SearchHistory({super.key, required this.callback});
 
   @override
   State<SearchHistory> createState() => _SearchHistoryState();
@@ -48,7 +40,9 @@ class _SearchHistoryState extends State<SearchHistory> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Вы недавно искали',
+            _history.length != 0
+              ? 'Вы недавно искали'
+              : 'Тут будет ваша история поиска',
             style: AppStyles.magistral20w500.copyWith(color: AppColors.white.withOpacity(0.5)),
           ),
         ),
@@ -69,16 +63,22 @@ class _SearchHistoryState extends State<SearchHistory> {
               ),
               const SizedBox(width: 20),
               Expanded(
-                child: Container(
-                  height: 46,
-                  alignment: Alignment.centerLeft,
-                  decoration:
-                      BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.white.withOpacity(0.2)))),
-                  child: Text(
-                    _history[index],
-                    style: AppStyles.magistral18w400.copyWith(color: AppColors.white),
+                child:
+                GestureDetector(
+                  onTap: (){
+                    widget.callback(_history[index]);
+                  },
+                  child: Container(
+                    height: 46,
+                    alignment: Alignment.centerLeft,
+                    decoration:
+                    BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.white.withOpacity(0.2)))),
+                    child: Text(
+                      _history[index],
+                      style: AppStyles.magistral18w400.copyWith(color: AppColors.white),
+                    ),
                   ),
-                ),
+                )
               ),
             ],
           ),

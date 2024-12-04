@@ -35,6 +35,13 @@ class _SearchScreenState extends State<SearchScreen> {
   bool showHistory = true;
   Timer? _debounce;
 
+  updateSearchFromHistory(String historySearch){
+    setState(() {
+      controller.text = historySearch;
+    });
+    _onSearchChanged(historySearch);
+  }
+
   _cleartext(){
     controller.clear();
     setState(() {
@@ -42,6 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
       songs = SearchResults.fromJson({'searchCount': 0, 'songs': []});
     });
   }
+
   _onSearchChanged(String query) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     if(query.length < 3) {
@@ -130,7 +138,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           const SizedBox(height: 30),
           if (showHistory) ...[
-            SearchHistory()
+            SearchHistory(callback: updateSearchFromHistory,)
           ]
           else if (songs.searchCount == 0) ...[
             searching ?  const Padding(
