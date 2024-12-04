@@ -128,7 +128,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }
 
                     final user = snapshot.data!; // Get user data
-
+                    print('fetched user on profile screen');
+                    print(user);
                     return Stack(
                       alignment: Alignment.topCenter,
                       children: [

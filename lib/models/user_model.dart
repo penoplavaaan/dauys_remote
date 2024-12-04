@@ -4,8 +4,8 @@ class UserSubscription {
   final int id;
   final bool isPremium;
   final String subscriptionPlan;
-  final bool isExpired;
-  final String expirationDate;
+  final bool? isExpired;
+  final String? expirationDate;
 
   UserSubscription({
     required this.id,
@@ -20,8 +20,8 @@ class UserSubscription {
       id: json['id'],
       isPremium: json['isPremium'],
       subscriptionPlan: json['subscriptionPlan'],
-      isExpired: json['isExpired'],
-      expirationDate: json['expirationDate'],
+      isExpired: json['isExpired'] ?? false,
+      expirationDate: json['expirationDate'] ?? '',
     );
   }
 

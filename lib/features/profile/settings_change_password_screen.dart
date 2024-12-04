@@ -75,7 +75,7 @@ class _SettingsChangePasswordScreenState extends State<SettingsChangePasswordScr
                         newPassword: controllerNewPassord.text,
                         newPasswordRepeat: controllerRepeatPassword.text,
                       );
-                      if(res == true){
+                      if(res == true) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Пароль успешно сохранен!')),
                         );

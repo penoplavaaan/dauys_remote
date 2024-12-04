@@ -53,6 +53,12 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
             isActive: currentIndex == 2,
             onTap: () => setIndex(2),
           ),
+          AppBottomNavigationItem(
+            title: 'Auth',
+            icon: AppIcons.profile,
+            isActive: currentIndex == 3,
+            onTap: () => setIndex(3),
+          ),
         ],
       ),
     );

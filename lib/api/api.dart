@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:http/http.dart' as http;
 
 import '../models/collection.dart';
@@ -23,12 +24,18 @@ class Api {
     final localStorage = LocalStorage();
     final email = await localStorage.getEmail();
     final password = await localStorage.getPassword();
+    final token = await localStorage.getTokenExplicitly();
+
+    if (token != null) {
+      final api = Api._(token);
+      return api;
+    }
 
     if (email != null && password != null) {
       final api = Api._(await _initializeBearerToken(email, password));
       return api; // Return an instance of Api with the token
     } else {
-      throw Exception('Email or password not found in local storage.');
+      throw Exception('Email, password or bearerToken not found in local storage.');
     }
   }
 
@@ -167,8 +174,9 @@ class Api {
 
   Future<User> getUserFullData() async {
     final responseJson = await _makeGet('/api/v1/users/getUser');
+    print('responseJson');
+    print(responseJson);
     final newUser = User.fromJson(responseJson);
-
     // Fetch existing user settings
     final existingUser = await getUserSettings();
 
@@ -192,8 +200,6 @@ class Api {
 
     await _makePostWithQuery('/api/v1/users/setSettings', queryParams: queryParams);
   }
-
-
 
   Future<bool> changePassword({
     required String oldPassword,
@@ -225,5 +231,25 @@ class Api {
       'size': '10',
     };
     return await _makeGet('/api/v1/search/fullTextSearch', queryParams: queryParams);
+  }
+
+  Future<bool> authGoogle(String token) async {
+    final data = {
+      'code': token,
+    };
+
+    try{
+      _bearerToken =  (await _makePostNoAuth('/oauth2/mobile/google', data))['access_token'] ?? '';
+      if (_bearerToken == ''){
+        return false;
+      }
+
+      await localStorage.saveTokenExplicitly(_bearerToken);
+      return true;
+    }catch (e){
+      print(e);
+    }
+
+    return true;
   }
 }

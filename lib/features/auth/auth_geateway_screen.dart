@@ -1,3 +1,4 @@
+import 'package:dauys_remote/api/api.dart';
 import 'package:dauys_remote/core/constants/app_image.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
+import '../gateway/gateway_screen.dart';
 import 'email_login_screen.dart'; // Import the gateway screen
 
 class AuthGeatewayScreen extends StatefulWidget {
@@ -18,30 +20,50 @@ class AuthGeatewayScreen extends StatefulWidget {
 }
 
 class _AuthGeatewayScreenState extends State<AuthGeatewayScreen> {
-  Future<UserCredential> signInWithGoogle() async {
+  Future<void> signInWithGoogle() async {
     // Trigger the authentication flow
     GoogleSignInAccount? googleUser;
     try {
-      googleUser = await GoogleSignIn().signIn();
+      googleUser = await GoogleSignIn(
+        clientId: '966936741628-p6t5ri6um37lhg3fkkt9o7hc5g3vr85l.apps.googleusercontent.com'
+      ).signIn();
     } catch (error) {
       print(error);
     }
+
+    if(googleUser == null || googleUser.serverAuthCode == ''){
+      print('googleUser is null');
+      throw Exception('googleUser is null');
+    }
+
     print('googleUser');
-    print(googleUser);
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-    print('googleAuth');
-    print(googleAuth?.accessToken);
-    print(googleAuth?.idToken);
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+    print(googleUser.serverAuthCode);
+    final api = await Api.createFirstTime();
+    final accessTokenFetched = await api.authGoogle(googleUser.serverAuthCode ?? '');
+    if(accessTokenFetched){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const GateWayScreen()),
+      );
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Пароль успешно сохранен!')),
     );
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return;
+    // Obtain the auth details from the request
+    // final GoogleSignInAuthentication? googleAuth = await googleUser.authentication;
+    //
+    // print('googleAuth');
+    // print(googleAuth?.accessToken);
+    // print(googleAuth?.idToken);
+    // // Create a new credential
+    // final credential = GoogleAuthProvider.credential(
+    //   accessToken: googleAuth?.accessToken,
+    //   idToken: googleAuth?.idToken,
+    // );
+    //
+    // // Once signed in, return the UserCredential
+    // return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   Future<UserCredential?> signInWithFacebook() async {

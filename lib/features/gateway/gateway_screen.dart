@@ -23,12 +23,14 @@ class _GateWayScreenState extends State<GateWayScreen> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
 
   final List<Widget Function()> _pageBuilders = [
         () => const MainScreen(),
         () => const SearchScreen(),
         () => const ProfileScreen(),
+        () => const AuthGeatewayScreen(),
   ];
 
   @override

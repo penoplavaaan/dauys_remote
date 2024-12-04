@@ -9,6 +9,20 @@ class LocalStorage {
   }
 
   // Save email and password
+  Future<void> saveTokenExplicitly(String token) async {
+    await init();
+    var box = Hive.box('credentials');
+    await box.put('token', token);
+  }
+
+  // Save email and password
+  Future<String?> getTokenExplicitly() async {
+    await init();
+    var box = Hive.box('credentials');
+    return await box.get('token');
+  }
+
+  // Save email and password
   Future<void> saveCredentials(String email, String password) async {
     await init();
     var box = Hive.box('credentials');
@@ -36,6 +50,11 @@ class LocalStorage {
     var box = Hive.box('credentials');
     await box.delete('email');
     await box.delete('password');
+    await box.delete('token');
+
+
+    var boxHistory = Hive.box('search_history');
+    await boxHistory.delete('queries');
   }
 
   Future<void> saveSearchQuery(String query) async {
