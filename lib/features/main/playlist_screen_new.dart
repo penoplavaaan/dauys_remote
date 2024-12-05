@@ -1,16 +1,12 @@
 
-import 'package:blur/blur.dart';
-import 'package:dauys_remote/core/constants/app_svg.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
-import 'package:dauys_remote/core/widget/add_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/song_preview_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/playlist_item_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/models/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../core/helpers/ImageAWS.dart';
 import '../gateway/gateway_screen.dart';
