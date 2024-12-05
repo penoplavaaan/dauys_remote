@@ -77,16 +77,16 @@ class SocketService {
 
   parseIncomingMessage(String message){
     print('Subscription received');
-    var _mes = jsonDecode(message);
-    print(_mes);
+    var mes = jsonDecode(message);
+    print(mes);
 
     if(
-      (_mes['message']['type'] == incomingMessageTypeHandshake)
-      && (_mes['message']['command'] == commandTypeHandshake)
+      (mes['message']['type'] == incomingMessageTypeHandshake)
+      && (mes['message']['command'] == commandTypeHandshake)
     ) {
       print('handshake success');
       _isConnected = true;
-      deviceId = _mes['message']['deviceId'] ?? 0;
+      deviceId = mes['message']['deviceId'] ?? 0;
     }
   }
 

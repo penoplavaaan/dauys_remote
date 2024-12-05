@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:http/http.dart' as http;
 
 import '../models/collection.dart';
@@ -121,6 +120,29 @@ class Api {
     }
   }
 
+  Future<dynamic> _makeDelete(String endpoint, {Map<String, String>? queryParams}) async {
+    Uri uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
+    final headers = await _buildHeaders();
+
+    final response = await http.delete(uri, headers: headers);
+
+
+    print('DELETE request:');
+    print('endpoint: $endpoint');
+    print('queryParams:');
+    print('token :$_bearerToken');
+    print(queryParams);
+    print('response statusCode: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      print('response:');
+      print(response.body);
+      return json.decode(utf8.decode(response.bodyBytes));
+    } else {
+      throw Exception('Failed to load data: ${response.statusCode}');
+    }
+  }
+
+
   Future<dynamic> _makePostWithQuery(String endpoint, {Map<String, String>? queryParams}) async {
     Uri uri = Uri.parse('$baseUrl$endpoint').replace(queryParameters: queryParams);
     final headers = await _buildHeaders();
@@ -233,6 +255,15 @@ class Api {
     return await _makeGet('/api/v1/search/fullTextSearch', queryParams: queryParams);
   }
 
+  Future<dynamic> getFavourites() async {
+     final queryParams = {
+      'page': '0',
+      'size': '500',
+    };
+
+    return await _makeGet('/api/v1/userdata/favoritesList', queryParams: queryParams);
+  }
+
   Future<bool> authGoogle(String token) async {
     final data = {
       'code': token,
@@ -248,6 +279,25 @@ class Api {
       return true;
     }catch (e){
       print(e);
+    }
+
+    return true;
+  }
+
+  Future<bool> toggleFavourites(int songId, bool inFavNow) async{
+    try{
+      if(inFavNow){
+        final data = {
+          'songId': songId,
+        };
+
+        await _makePost('/api/v1/userdata/addToFavorites', data);
+      }
+      else {
+        await _makeDelete('/api/v1/userdata/favoritesdeleteSong/$songId');
+      }
+    } catch (e) {
+      return false;
     }
 
     return true;

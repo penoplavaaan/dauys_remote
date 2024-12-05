@@ -1,11 +1,8 @@
-import 'dart:async';
-import 'dart:io';
 
 import 'package:dauys_remote/api/api.dart';
 import 'package:dauys_remote/features/gateway/gateway_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'firebase_options.dart';
 
@@ -18,7 +15,7 @@ void main() async {
   );
   runApp(
     Phoenix(
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );}
 

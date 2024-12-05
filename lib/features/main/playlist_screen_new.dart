@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../core/helpers/ImageAWS.dart';
+import '../gateway/gateway_screen.dart';
 
 
 class PlaylistScreenNew extends StatefulWidget {
@@ -60,7 +61,10 @@ class _PlaylistScreenNewState extends State<PlaylistScreenNew> {
                       children: [
                         const SizedBox(width: 16),
                         GestureDetector(
-                          onTap: () => Navigator.of(context).pop(),
+                          onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const GateWayScreen()),
+                          ),
                           behavior: HitTestBehavior.opaque,
                           child: Container(
                             height: 32,
@@ -90,9 +94,9 @@ class _PlaylistScreenNewState extends State<PlaylistScreenNew> {
                           ),
                         ),
                         const SizedBox(width: 22),
-                        AddButton(
-                          onTap: () {},
-                        ),
+                        // AddButton(
+                        //   onTap: () {},
+                        // ),
                         const SizedBox(width: 16),
                       ],
                     ),
@@ -114,11 +118,15 @@ class _PlaylistScreenNewState extends State<PlaylistScreenNew> {
                     image: ImageAWS.getImageURI(widget.collection.songs[index].songImageUri),
                     title: widget.collection.songs[index].genre,
                     name: widget.collection.songs[index].name,
+                    songID: widget.collection.songs[index].id,
+                    isInFavourites: widget.collection.songs[index].isInUserFavorites,
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SongPreviewScreenNew(songID: widget.collection.songs[index].id.toString()),
+                          builder: (context) => SongPreviewScreenNew(
+                              songID: widget.collection.songs[index].id.toString(),
+                          ),
                         ),
                       );
                     },
@@ -129,90 +137,90 @@ class _PlaylistScreenNewState extends State<PlaylistScreenNew> {
               const SizedBox(height: 10),
             ],
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SongPreviewScreenNew(songID: '1',),
-                ),
-              );
-            },
-            behavior: HitTestBehavior.opaque,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Stack(
-                alignment: Alignment.bottomLeft,
-                children: [
-                  const Blur(
-                    blur: 10,
-                    blurColor: AppColors.white,
-                    colorOpacity: 0.2,
-                    child: SizedBox(height: 59, width: double.infinity),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 11, right: 8, left: 8),
-                    child: Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Image.network(
-                            ImageAWS.getImageURI(widget.collection.collectionImageAwsUuid),
-                            fit: BoxFit.cover,
-                            height: 40,
-                            width: 40,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                truncateText(widget.collection.name),
-                                style: AppStyles.magistral14w500.copyWith(color: AppColors.white),
-                              ),
-                              const SizedBox(height: 3),
-                              Text(
-                                truncateText(widget.collection.songsCount.toString()),
-                                style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        SvgPicture.asset(
-                          AppSvg.playMini,
-                          height: 30,
-                          width: 30,
-                        ),
-                        const SizedBox(width: 20),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    height: 3,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    height: 3,
-                    width: MediaQuery.of(context).size.width * percent,
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(
+          //         builder: (context) => const SongPreviewScreenNew(songID: '1',),
+          //       ),
+          //     );
+          //   },
+          //   behavior: HitTestBehavior.opaque,
+          //   child: ClipRRect(
+          //     borderRadius: BorderRadius.circular(5),
+          //     child: Stack(
+          //       alignment: Alignment.bottomLeft,
+          //       children: [
+          //         const Blur(
+          //           blur: 10,
+          //           blurColor: AppColors.white,
+          //           colorOpacity: 0.2,
+          //           child: SizedBox(height: 59, width: double.infinity),
+          //         ),
+          //         Padding(
+          //           padding: const EdgeInsets.only(top: 8, bottom: 11, right: 8, left: 8),
+          //           child: Row(
+          //             children: [
+          //               ClipRRect(
+          //                 borderRadius: BorderRadius.circular(5),
+          //                 child: Image.network(
+          //                   ImageAWS.getImageURI(widget.collection.collectionImageAwsUuid),
+          //                   fit: BoxFit.cover,
+          //                   height: 40,
+          //                   width: 40,
+          //                 ),
+          //               ),
+          //               const SizedBox(width: 10),
+          //               Expanded(
+          //                 child: Column(
+          //                   mainAxisSize: MainAxisSize.min,
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   children: [
+          //                     Text(
+          //                       truncateText(widget.collection.name),
+          //                       style: AppStyles.magistral14w500.copyWith(color: AppColors.white),
+          //                     ),
+          //                     const SizedBox(height: 3),
+          //                     Text(
+          //                       truncateText(widget.collection.songsCount.toString()),
+          //                       style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //               const SizedBox(width: 10),
+          //               SvgPicture.asset(
+          //                 AppSvg.playMini,
+          //                 height: 30,
+          //                 width: 30,
+          //               ),
+          //               const SizedBox(width: 20),
+          //             ],
+          //           ),
+          //         ),
+          //         Container(
+          //           margin: const EdgeInsets.symmetric(horizontal: 8),
+          //           height: 3,
+          //           width: double.infinity,
+          //           decoration: BoxDecoration(
+          //             color: AppColors.white.withOpacity(0.2),
+          //             borderRadius: BorderRadius.circular(10),
+          //           ),
+          //         ),
+          //         Container(
+          //           margin: const EdgeInsets.symmetric(horizontal: 8),
+          //           height: 3,
+          //           width: MediaQuery.of(context).size.width * percent,
+          //           decoration: BoxDecoration(
+          //             color: AppColors.white,
+          //             borderRadius: BorderRadius.circular(10),
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

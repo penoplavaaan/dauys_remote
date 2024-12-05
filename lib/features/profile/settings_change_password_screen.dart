@@ -77,13 +77,13 @@ class _SettingsChangePasswordScreenState extends State<SettingsChangePasswordScr
                       );
                       if(res == true) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Пароль успешно сохранен!')),
+                          const SnackBar(content: Text('Пароль успешно сохранен!')),
                         );
                         return;
                       }
 
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Ошибка сохранения пароля')),
+                        const SnackBar(content: Text('Ошибка сохранения пароля')),
                       );
                     },
                     width: 150,

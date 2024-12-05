@@ -5,6 +5,7 @@ class Song {
   final String songUri;
   final String album;
   final String songImageUri;
+  final bool isInUserFavorites;
 
   Song({
     required this.id,
@@ -13,6 +14,7 @@ class Song {
     required this.songUri,
     required this.album,
     required this.songImageUri,
+    this.isInUserFavorites = false,
   });
 
   // Factory method to create a Song from JSON
@@ -24,6 +26,7 @@ class Song {
       songUri: json['songUri'],
       album: json['album'],
       songImageUri: json['songImageUri'],
+      isInUserFavorites: json['songIsHasInUserFavoritesList'] ?? false,
     );
   }
 
@@ -36,6 +39,7 @@ class Song {
       'songUri': songUri,
       'album': album,
       'songImageUri': songImageUri,
+      'songIsHasInUserFavoritesList': isInUserFavorites,
     };
   }
 }

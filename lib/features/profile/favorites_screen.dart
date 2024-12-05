@@ -7,8 +7,37 @@ import 'package:dauys_remote/features/main/widget/playlist_item.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 
-class FavoritesScreen extends StatelessWidget {
-  const FavoritesScreen({super.key});
+import '../../api/api.dart';
+import '../../core/helpers/ImageAWS.dart';
+import '../../models/search_results.dart';
+import '../main/widget/playlist_item_new.dart';
+
+class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({
+    super.key,
+  });
+
+  @override
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  SearchResults songs = SearchResults.fromJson({'searchCount': 0, 'songs': []});
+  bool isSearching = true;
+
+  @override
+  void initState() {
+    Api.create().then((Api a){
+      a.getFavourites().then((res){
+        setState(() {
+          songs = SearchResults.fromJson(res);
+          isSearching = false;
+        });
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +89,7 @@ class FavoritesScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
-                    46.toSongString(),
+                    isSearching? '... песен' : songs.searchCount.toSongString(),
                     style: AppStyles.magistral16w400.copyWith(color: AppColors.white.withOpacity(0.6)),
                   ),
                 ),
@@ -68,19 +97,38 @@ class FavoritesScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 2),
-          Expanded(
-            child: ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: playlist.length,
-              itemBuilder: (context, index) => PlaylistItem(
-                image: playlist[index]['image'],
-                title: playlist[index]['title'],
-                name: playlist[index]['name'],
-                showAddToFavorite: true,
+          if(songs.searchCount == 0) ...[
+            isSearching ?
+            const SizedBox(
+              height: 50,
+              width: 50,
+              child: CircularProgressIndicator(),
+            )
+                : Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                                'Пока в избранном ничего нет. \nПопробуйте добавить песни, и они появятся на этом экране!',
+                                style: AppStyles.magistral16w400.copyWith(
+                    color: AppColors.white.withOpacity(0.6)),
+                              ),
+                ),
+          ] else ...[
+            Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: songs.searchCount,
+                itemBuilder: (context, index) => PlaylistItemNew(
+                  image: ImageAWS.getImageURI(songs.songs[index].songImageUri),
+                  title: songs.songs[index].album,
+                  name: songs.songs[index].name,
+                  songID: songs.songs[index].id,
+                  showAddToFavorite: true,
+                  isInFavourites: songs.songs[index].isInUserFavorites,
+                ),
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
               ),
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
             ),
-          ),
+          ],
         ],
       ),
     );

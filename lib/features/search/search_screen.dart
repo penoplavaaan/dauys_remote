@@ -5,8 +5,6 @@ import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
-import 'package:dauys_remote/features/main/playlist_screen.dart';
-import 'package:dauys_remote/features/main/widget/playlist_item.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/features/search/search_history.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
       _debounce?.cancel();
       return;
     }
+
     _debounce = Timer(const Duration(milliseconds: 800), () async {
       localStorage.saveSearchQuery(query);
 
@@ -69,7 +68,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
       setState(() {
         searching = false;
-        this.songs = songs;
+        songs = songs;
       });
     });
   }
@@ -131,7 +130,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 errorMaxLines: 10,
                   suffixIcon: IconButton(
                     onPressed: _cleartext,
-                    icon: Icon(Icons.clear,color: AppColors.white),
+                    icon: const Icon(Icons.clear,color: AppColors.white),
                   )
               ),
             ),
@@ -165,11 +164,15 @@ class _SearchScreenState extends State<SearchScreen> {
                     image: ImageAWS.getImageURI(songs.songs[index].songImageUri),
                     title: songs.songs[index].name,
                     name:  songs.songs[index].album,
+                    songID: songs.songs[index].id,
+                    showAddToFavorite: false,
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SongPreviewScreenNew(songID: songs.songs[index].id.toString()),
+                          builder: (context) => SongPreviewScreenNew(
+                              songID: songs.songs[index].id.toString(),
+                          ),
                         ),
                       );
                     },

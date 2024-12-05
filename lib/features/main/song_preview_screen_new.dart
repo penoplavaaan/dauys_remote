@@ -8,7 +8,6 @@ import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
-import 'package:dauys_remote/features/main/sing_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -21,13 +20,14 @@ import '../../core/theme/app_gradients.dart';
 import '../../models/song_new.dart';
 import '../../models/user_model.dart';
 import '../../socket/socket_service.dart';
+import '../gateway/gateway_screen.dart';
 
 class SongPreviewScreenNew extends StatefulWidget {
   final String songID; // Add the songID parameter
 
   const SongPreviewScreenNew({
     super.key,
-    required this.songID, // Make it required
+    required this.songID,
   });
 
   @override
@@ -40,6 +40,8 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
   late SongNew _songFinal;
   final controller = PageController();
   late SocketService client;
+  Api? api;
+  bool isInFavourites = false;
 
   int _micCount = 1;
   late Widget _connectRegion;
@@ -67,9 +69,18 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
   void initState() {
     super.initState();
     // Fetch the song data using the provided songID
-    _song = Api.create().then((api) => api.getSongById(int.parse(widget.songID))).then((sng) => _songFinal = sng);
-    Api.create().then((api) => api.getUserFullData()).then((user) => _user = user);
+    _song = Api.create().then((api) => api.getSongById(int.parse(widget.songID))).then((sng) {
+      _songFinal = sng;
+      isInFavourites = sng.isInUserFavorites;
+      return sng;
+    });
 
+    Api.create().then((api) => api.getUserFullData()).then((user) => _user = user);
+    Api.create().then((Api a) {
+      api = a;
+    });
+
+    // isInFavourites = _songFinal.isInUserFavorites;
     _connectRegion = AppButton(
       title: 'Выбрать режим',
       onTap: () async {
@@ -309,8 +320,42 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
         );
   }
 
+
+  void toggleFavorite() {
+    bool newFavVal = !isInFavourites;
+
+    if(api is Api){
+      api?.toggleFavourites(_songFinal.id, newFavVal);
+    }
+    setState(() {
+      isInFavourites = !isInFavourites;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final starNotFav = GestureDetector(
+      onTap: toggleFavorite,
+      child: Image.asset(
+        AppIcons.starOutlined,
+        height: 26,
+        width: 26,
+        color: AppColors.white,
+      ),
+    );
+
+
+    final starFav = GestureDetector(
+      onTap: toggleFavorite,
+      child: Image.asset(
+        AppIcons.starOutlined,
+        height: 26,
+        width: 26,
+        color: AppColors.yellow,
+      ),
+    );
+
+
     return AppScaffold(
       safeAreaTop: false,
       body: FutureBuilder<SongNew>(
@@ -339,7 +384,10 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
-                          onTap: () => Navigator.of(context).pop(),
+                          onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const GateWayScreen()),
+                          ),
                           behavior: HitTestBehavior.opaque,
                           child: Container(
                             height: 32,
@@ -372,7 +420,7 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                           child: Row(
                             children: [
                               Text(
-                                '4', // Example rating, replace with actual data if available
+                                song.rating,
                                 style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
                               ),
                               const SizedBox(width: 4),
@@ -417,18 +465,12 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                           const SizedBox(height: 2),
                           Text(
                             song.album,
-                            // 'Hollyflame', // You can update this as needed
                             style: AppStyles.magistral20w500.copyWith(color: AppColors.white.withOpacity(0.6)),
                           ),
                         ],
                       ),
                       const Spacer(),
-                      Image.asset(
-                        AppIcons.starOutlined,
-                        height: 26,
-                        width: 26,
-                        color: AppColors.white,
-                      ),
+                      isInFavourites ? starFav : starNotFav,
                     ],
                   ),
                   const SizedBox(height: 18),

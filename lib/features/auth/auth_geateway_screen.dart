@@ -47,7 +47,7 @@ class _AuthGeatewayScreenState extends State<AuthGeatewayScreen> {
       );
     }
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Пароль успешно сохранен!')),
+      const SnackBar(content: Text('Пароль успешно сохранен!')),
     );
     return;
     // Obtain the auth details from the request

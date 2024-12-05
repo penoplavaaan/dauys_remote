@@ -1,4 +1,3 @@
-import 'package:dauys_remote/core/constants/regex.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/widget/app_text_input.dart';
 import 'package:flutter/material.dart';

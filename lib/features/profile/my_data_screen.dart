@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
@@ -81,12 +80,12 @@ class _MyDataScreenState extends State<MyDataScreen> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Данные успешно сохранены!')),
+        const SnackBar(content: Text('Данные успешно сохранены!')),
       );
     } catch (error) {
       print('Error saving user data: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ошибка при сохранении данных!')),
+        const SnackBar(content: Text('Ошибка при сохранении данных!')),
       );
     } finally {
       setState(() {
@@ -159,7 +158,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
       ) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: label, border: OutlineInputBorder()),
+      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
       keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
       validator: (value) {
         if (value == null || value.isEmpty) {

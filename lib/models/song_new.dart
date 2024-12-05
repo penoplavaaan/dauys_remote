@@ -13,6 +13,7 @@ class SongNew {
   final bool hasProfanity;
   final bool isInUserFavorites;
   final String songText; // For song text
+  final String rating;
 
   SongNew({
     required this.id,
@@ -29,6 +30,7 @@ class SongNew {
     required this.hasProfanity,
     required this.isInUserFavorites,
     required this.songText, // Initialize song text
+    this.rating = '0.0'
   });
 
   // Factory method to create a Song from JSON
@@ -48,6 +50,7 @@ class SongNew {
       hasProfanity: json['hasProfanity'],
       isInUserFavorites: json['songIsHasInUserFavoritesList'],
       songText: songText, // Assign song text
+      rating: json['rating'] ?? '0.0'
     );
   }
 
@@ -68,6 +71,28 @@ class SongNew {
       hasProfanity: json['hasProfanity'],
       isInUserFavorites: json['songIsHasInUserFavoritesList'],
       songText: '', // Initially empty until fetched
+      rating: json['rating'] ?? '0.0'
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'genre': genre,
+      'name': name,
+      'album': album,
+      'songUri': songUri,
+      'songShiftedUri': songShiftedUri,
+      'notesUri': notesUri,
+      'songImageUri': songImageUri,
+      'tags': tags,
+      'originalFileName': originalFileName,
+      'metadata': metadata,
+      'hasProfanity': hasProfanity,
+      'songIsHasInUserFavoritesList': isInUserFavorites,
+      'songText': songText,
+      'rating': rating
+    };
+  }
+
 }

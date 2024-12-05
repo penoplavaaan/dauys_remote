@@ -1,6 +1,5 @@
 import 'package:blur/blur.dart';
 import 'package:dauys_remote/core/constants/app_icons.dart';
-import 'package:dauys_remote/core/constants/app_tmp_image.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_gradients.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
@@ -8,10 +7,7 @@ import 'package:dauys_remote/core/widget/app_avatar.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/core/widget/gradient_overlay.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
-import 'package:dauys_remote/features/profile/history_screen.dart';
-import 'package:dauys_remote/features/profile/favorites_screen.dart';
 import 'package:dauys_remote/features/profile/my_data_screen.dart';
-import 'package:dauys_remote/features/profile/my_playlists_screen.dart';
 import 'package:dauys_remote/features/profile/settings_change_password_screen.dart';
 import 'package:dauys_remote/features/profile/settings_screen.dart';
 import 'package:dauys_remote/features/profile/widget/profile_tile.dart';
@@ -22,6 +18,7 @@ import '../../api/api.dart';
 import '../../core/constants/app_image.dart';
 import '../../models/user_model.dart';
 import '../../storage/local_storage.dart';
+import 'favorites_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -222,8 +219,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileTile(
                           title: 'Избранное',
                           icon: AppIcons.starOutlined,
-                          page: null
-                          // page: FavoritesScreen(),
+                          // page: null
+                          page: FavoritesScreen(),
                         ),
                         SizedBox(width: 16),
                       ],

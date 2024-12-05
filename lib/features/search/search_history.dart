@@ -1,7 +1,6 @@
 import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
-import 'package:dauys_remote/features/main/main_screen.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../storage/local_storage.dart';
@@ -40,7 +39,7 @@ class _SearchHistoryState extends State<SearchHistory> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            _history.length != 0
+            _history.isNotEmpty
               ? 'Вы недавно искали'
               : 'Тут будет ваша история поиска',
             style: AppStyles.magistral20w500.copyWith(color: AppColors.white.withOpacity(0.5)),

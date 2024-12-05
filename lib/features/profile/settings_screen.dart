@@ -1,16 +1,10 @@
-import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
-import 'package:dauys_remote/core/theme/app_gradients.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
-import 'package:dauys_remote/core/widget/app_switch.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
-import 'package:dauys_remote/features/main/widget/gradient_button.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/features/profile/settings_change_language_screen.dart';
 import 'package:dauys_remote/features/profile/settings_change_password_screen.dart';
-import 'package:dauys_remote/features/profile/settings_devices_enter_code_screen.dart';
-import 'package:dauys_remote/features/profile/settings_devices_scan_screen.dart';
 import 'package:dauys_remote/features/profile/settings_devises_screen.dart';
 import 'package:flutter/material.dart';
 
