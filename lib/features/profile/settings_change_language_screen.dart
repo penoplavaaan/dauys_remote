@@ -6,6 +6,7 @@ import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SettingsChangeLanguageScreen extends StatefulWidget {
   const SettingsChangeLanguageScreen({
@@ -25,8 +26,26 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
 
   int selectedLanguage = 0;
 
+
   @override
   Widget build(BuildContext context) {
+    String lang = FlutterI18n.currentLocale(context)?.languageCode ?? 'ru';
+    setState(() {
+      switch (lang) {
+        case 'ru':
+          selectedLanguage = 0;
+          break;
+        case 'kz':
+          selectedLanguage = 1;
+          break;
+        case 'en':
+          selectedLanguage = 2;
+          break;
+        default:
+          selectedLanguage = 0;
+          break;
+      }
+    });
     return AppScaffold(
       safeAreaTop: false,
       disableBackgroundColorSpots: true,
@@ -47,6 +66,16 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
               itemCount: languages.length,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () => setState(() {
+                  print(index);
+                  if(index == 0){
+                    _changeLanguage(Locale('ru'));
+                  }
+                  if(index == 1){
+                    _changeLanguage(Locale('kz'));
+                  }
+                  if(index == 2){
+                    _changeLanguage(Locale('en'));
+                  }
                   selectedLanguage = index;
                 }),
                 behavior: HitTestBehavior.opaque,
@@ -80,5 +109,9 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
         ],
       ),
     );
+  }
+
+  void _changeLanguage(Locale locale) {
+    FlutterI18n.refresh(context, locale);
   }
 }

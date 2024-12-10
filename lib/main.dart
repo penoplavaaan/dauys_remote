@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'firebase_options.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'features/auth/auth_geateway_screen.dart';
 
@@ -27,6 +29,23 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'DAUYS Remote',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        FlutterI18nDelegate(
+          translationLoader: FileTranslationLoader(
+            basePath: 'assets/i18n',
+            fallbackFile: 'ru',
+          ),
+        ),
+      ],
+      supportedLocales: const [
+        Locale('ru', ''),
+        Locale('en', ''),
+        Locale('kz', ''),
+      ],
+      locale: const Locale('ru'),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

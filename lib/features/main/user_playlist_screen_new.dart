@@ -66,7 +66,7 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
                       };
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => const GateWayScreen(index: 2,)),
+                        MaterialPageRoute(builder: (context) => const GateWayScreen(index: 2)),
                       );
                     });
                   });
@@ -114,7 +114,7 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
                         GestureDetector(
                           onTap: () => Navigator.pushReplacement(
                             context,
-                            MaterialPageRoute(builder: (context) => const GateWayScreen()),
+                            MaterialPageRoute(builder: (context) => const GateWayScreen(index: 2)),
                           ),
                           behavior: HitTestBehavior.opaque,
                           child: Container(

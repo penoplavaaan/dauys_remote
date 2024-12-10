@@ -27,6 +27,7 @@ dependencies:
   google_sign_in: ^6.2.2
   stomp_dart_client: ^2.1.0
   flutter_phoenix: ^1.1.1
+  flutter_i18n: ^0.36.2
 
 dev_dependencies:
   flutter_test:
@@ -43,6 +44,7 @@ flutter:
     - assets/svg/
     - assets/icons/
     - assets/tmp/
+    - assets/i18n/
 
   fonts:
     - family: Magistral

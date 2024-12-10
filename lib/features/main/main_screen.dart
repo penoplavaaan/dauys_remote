@@ -7,6 +7,7 @@ import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/playlist_screen_new.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../api/api.dart';
 import '../../core/constants/app_image.dart';
@@ -56,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           const SizedBox(height: 30),
           Text(
-            'Рекомендации дня',
+            FlutterI18n.translate(context, "daily_recommendations"),
             style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
           ),
           const SizedBox(height: 10),

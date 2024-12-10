@@ -7,6 +7,7 @@ import 'package:dauys_remote/features/profile/settings_change_language_screen.da
 import 'package:dauys_remote/features/profile/settings_change_password_screen.dart';
 import 'package:dauys_remote/features/profile/settings_devises_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
@@ -141,7 +142,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 _text('Сменить язык'),
                                 const SizedBox(width: 16),
                                 Text(
-                                  'Русский',
+                                  FlutterI18n.translate(context, "lang"),
                                   style: AppStyles.magistral16w400.copyWith(color: AppColors.white.withOpacity(.5)),
                                 ),
                                 const SizedBox(width: 16),
