@@ -50,7 +50,7 @@ class SongNew {
       hasProfanity: json['hasProfanity'],
       isInUserFavorites: json['songIsHasInUserFavoritesList'],
       songText: songText, // Assign song text
-      rating: json['rating'] ?? '0.0'
+      rating: (json['rating'] ?? '0.0').toString()
     );
   }
 

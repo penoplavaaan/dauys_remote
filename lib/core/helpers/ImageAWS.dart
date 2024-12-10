@@ -3,11 +3,12 @@ import '../../api/api.dart';
 
 class ImageAWS {
 
-  static String getImageURI(String? path){
+  static String getImageURI(String? path, {String? text = '...'}) {
     const baseURI = Api.baseUrl;
 
     if(path == null){
-      return 'https://placehold.co/100x100?text=Not+Found';
+      print('path == null');
+      return 'https://placehold.co/400x400.png?text=$text';
     }
 
     if(path.contains('/')){

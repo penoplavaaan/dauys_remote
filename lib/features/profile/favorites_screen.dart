@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../api/api.dart';
 import '../../core/helpers/ImageAWS.dart';
 import '../../models/search_results.dart';
+import '../main/song_preview_screen_new.dart';
 import '../main/widget/playlist_item_new.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -122,6 +123,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   songID: songs.songs[index].id,
                   showAddToFavorite: true,
                   isInFavourites: songs.songs[index].isInUserFavorites,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SongPreviewScreenNew(
+                          songID: songs.songs[index].id.toString(),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
               ),

@@ -20,6 +20,7 @@ class PlaylistItemNew extends StatefulWidget {
     this.showAddToFavorite = true,
     this.onTap,
     this.showSingButton = false,
+    this.onLongTap
   });
 
   final String image;
@@ -30,6 +31,7 @@ class PlaylistItemNew extends StatefulWidget {
   final VoidCallback? onTap; // This is the onTap callback type
   final bool showSingButton;
   final bool isInFavourites;
+  final VoidCallback? onLongTap;
 
   @override
   State<PlaylistItemNew> createState() => _PlaylistItemNewState();
@@ -104,6 +106,7 @@ class _PlaylistItemNewState extends State<PlaylistItemNew> {
 
     return GestureDetector( // Wrap the entire Row with GestureDetector
       onTap: widget.onTap, // When tapped, trigger the onTap callback if provided
+      onLongPress: widget.onLongTap,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

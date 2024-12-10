@@ -7,9 +7,11 @@ class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({
     super.key,
     required this.onChange,
+    required this.currentIndex
   });
 
   final void Function(int index) onChange;
+  final int currentIndex;
 
   @override
   State<AppBottomNavigationBar> createState() => _AppBottomNavigationBarState();
@@ -18,6 +20,11 @@ class AppBottomNavigationBar extends StatefulWidget {
 class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
   int currentIndex = 0;
 
+  @override
+  void initState() {
+    currentIndex = widget.currentIndex;
+    super.initState();
+  }
   void setIndex(int index) {
     setState(() {
       currentIndex = index;

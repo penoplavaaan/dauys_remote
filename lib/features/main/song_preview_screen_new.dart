@@ -69,11 +69,14 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
   void initState() {
     super.initState();
     // Fetch the song data using the provided songID
-    _song = Api.create().then((api) => api.getSongById(int.parse(widget.songID))).then((sng) {
-      _songFinal = sng;
-      isInFavourites = sng.isInUserFavorites;
-      return sng;
-    });
+    _song = Api.create().then((api) => api.getSongById(
+      int.parse(widget.songID))).then((sng) {
+        _songFinal = sng;
+        isInFavourites = sng.isInUserFavorites;
+        return sng;
+      }
+
+    );
 
     Api.create().then((api) => api.getUserFullData()).then((user) => _user = user);
     Api.create().then((Api a) {
@@ -369,7 +372,12 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+                child: Text(
+                  'Error: ${snapshot.error} ${snapshot.toString()}',
+                  style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
+                )
+            );
           }
           if (!snapshot.hasData) {
             return const Center(child: Text('No data available'));
@@ -605,7 +613,15 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
 
   String formatDuration(String secondsString) {
     // Parse the input string to a double
-    double totalSeconds = double.parse(secondsString);
+    secondsString = secondsString.replaceFirst(',', '.');
+    double totalSeconds = 0.0;
+
+    try{
+      double totalSeconds = double.parse(secondsString);
+    }catch (e){
+      print(secondsString);
+      throw e;
+    }
 
     // Convert total seconds to minutes and seconds
     int minutes = totalSeconds ~/ 60; // Integer division for minutes

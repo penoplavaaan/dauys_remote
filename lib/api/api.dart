@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 import '../models/collection.dart';
 import '../models/song_new.dart';
+import '../models/user_collection.dart';
 import '../storage/local_storage.dart';
 import '../models/user_model.dart';
 
@@ -187,6 +188,17 @@ class Api {
     return collections;
   }
 
+  Future<List<UserCollection>> getAllUserCollections() async {
+    final responseJson = await _makeGet('/api/v1/userdata/userPlaylist');
+
+    // Convert the response into a List of Collections
+    List<UserCollection> collections = (responseJson as List)
+        .map((json) => UserCollection.fromJson(json))
+        .toList();
+
+    return collections;
+  }
+
   Future<SongNew> getSongById(int id) async {
     final responseJson = await _makeGet('/api/songs/$id');
     final songJson = responseJson['songs'][0];
@@ -314,6 +326,47 @@ class Api {
       else {
         await _makeDelete('/api/v1/userdata/favoritesdeleteSong/$songId');
       }
+    } catch (e) {
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> createNewPlaylist(String playlistName) async{
+    try{
+      final data = {
+        'userPlayListName': playlistName,
+      };
+
+      await _makePost('/api/v1/userdata/createUserPlaylist', data);
+    } catch (e) {
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> addSongToPlaylist(int playlistId, int songId) async{
+    try{
+      final data = {
+        "songsId": [
+          songId
+        ],
+        "playListId": playlistId
+      };
+
+      await _makePost('/api/v1/userdata/addToPlaylist', data);
+    } catch (e) {
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<bool> removeSongFromPlaylist(int songId, int playlistId) async{
+    try{
+      await _makeDelete('/api/v1/userdata/$songId/$playlistId');
     } catch (e) {
       return false;
     }

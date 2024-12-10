@@ -20,7 +20,10 @@ import 'package:flutter_svg/svg.dart';
 import '../../core/helpers/ImageAWS.dart';
 import '../../models/collection.dart';
 import '../../models/search_results.dart';
+import '../../models/user_collection.dart';
+import '../main/new_playlist_screen.dart';
 import '../main/playlist_screen_new.dart';
+import '../main/user_playlist_screen_new.dart';
 import 'evaluated_screen.dart';
 
 class MyPlaylistsScreen extends StatefulWidget {
@@ -64,8 +67,9 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
   ];
 
   List<Collection> _collections = [];
-  bool fetchingRecommended = true;
-
+  List<UserCollection> _userCollections = [];
+  bool _fetchingRecommended = true;
+  bool _fetchingUserCollections = true;
 
   Widget _title(String title) => Text(
         title,
@@ -77,6 +81,17 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => PlaylistScreenNew(
+          collection: collection,
+        ),
+      ),
+    );
+  }
+
+  openUserPlaylist(UserCollection collection, BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserPlaylistScreenNew(
           collection: collection,
         ),
       ),
@@ -111,10 +126,17 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
 
 
       api.getAllCollections().then((collections) {
-        print('FeTCH COLLECT');
         setState(() {
-          fetchingRecommended = false;
+          _fetchingRecommended = false;
           _collections = collections;
+        });
+      });
+
+
+      api.getAllUserCollections().then((userCollections) {
+        setState(() {
+          _fetchingUserCollections = false;
+          _userCollections = userCollections;
         });
       });
     });
@@ -143,7 +165,10 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
             title: 'Мои плейлисты',
             action: AddButton(
               onTap: () {
-                print('todo: new playlist');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NewPlaylistScreen()),
+                );
               },
             ),
           ),
@@ -320,14 +345,18 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
 
                 _title('Ваши альбомы'),
                 const SizedBox(height: 10),
-                SizedBox(
+                _fetchingUserCollections
+                    ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+                    :  SizedBox(
                   height: 165,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemCount: recommendation.length,
+                    itemCount: _userCollections.length,
                     itemBuilder: (context, index) => GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () => print('todo: open user playlist'),//openPlaylist(recommendation[index], context),
+                      onTap: () => openUserPlaylist(_userCollections[index], context),//openPlaylist(recommendation[index], context),
                       child: SizedBox(
                         height: 165,
                         width: 120,
@@ -336,8 +365,13 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child: Image.asset(
-                                recommendation[index]['image'],
+                              child:  Image.network(
+                                ImageAWS.getImageURI(
+                                    _userCollections[index].playlistSongsCount == 0
+                                    ? null
+                                    : _userCollections[index].songs[0]?.songImageUri ?? '',
+                                  text: _userCollections[index].playListName
+                                ),
                                 height: 120,
                                 width: 120,
                                 fit: BoxFit.cover,
@@ -345,12 +379,12 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              truncateText(recommendation[index]['title']),
+                              truncateText(_userCollections[index].playListName),
                               style: AppStyles.magistral14w700.copyWith(color: Colors.white),
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              (recommendation[index]['songs'] as int).toSongString(),
+                              (_userCollections[index].playlistSongsCount).toSongString(),
                               style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
                             ),
                           ],
@@ -363,8 +397,11 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                 const SizedBox(height: 30),
                 _title('Рекомендуем'),
                 const SizedBox(height: 10),
-                !fetchingRecommended
-                ? SizedBox(
+                _fetchingRecommended
+                ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+                : SizedBox(
                   height: 180,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
@@ -403,9 +440,6 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                     ),
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                   ),
-                )
-                :  const Center(
-                  child: CircularProgressIndicator(),
                 ),
               ],
             ),

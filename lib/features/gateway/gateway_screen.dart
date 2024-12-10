@@ -9,7 +9,10 @@ import '../search/search_screen.dart';
 class GateWayScreen extends StatefulWidget {
   const GateWayScreen({
     super.key,
+    this.index = 0
   });
+
+  final int index;
 
   @override
   State<GateWayScreen> createState() => _GateWayScreenState();
@@ -31,7 +34,14 @@ class _GateWayScreenState extends State<GateWayScreen> {
   ];
 
   @override
+  void initState() {
+    currentIndex = widget.index;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return WillPopScope(
       onWillPop: () async {
         return !await _keys[currentIndex].currentState!.maybePop();
@@ -49,6 +59,7 @@ class _GateWayScreenState extends State<GateWayScreen> {
                   currentIndex = index;
                 });
               },
+              currentIndex: currentIndex,
             ),
           ],
         ),
