@@ -10,6 +10,7 @@ import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -23,7 +24,7 @@ import '../../socket/socket_service.dart';
 import '../gateway/gateway_screen.dart';
 
 class SongPreviewScreenNew extends StatefulWidget {
-  final String songID; // Add the songID parameter
+  final String songID;
 
   const SongPreviewScreenNew({
     super.key,
@@ -35,8 +36,8 @@ class SongPreviewScreenNew extends StatefulWidget {
 }
 
 class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
-  late Future<SongNew> _song; // Add a future to fetch the song
-  late User _user; // Add a future to fetch the song
+  late Future<SongNew> _song;
+  late User _user;
   late SongNew _songFinal;
   final controller = PageController();
   late SocketService client;
@@ -57,9 +58,9 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
 
   @override
   void dispose() {
-    try{
+    try {
       client.deactivate();
-    }catch(e){
+    } catch (e) {
       print('Error deactivating socket client');
     }
     super.dispose();
@@ -68,270 +69,22 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
   @override
   void initState() {
     super.initState();
-    // Fetch the song data using the provided songID
-    _song = Api.create().then((api) => api.getSongById(
-      int.parse(widget.songID))).then((sng) {
-        _songFinal = sng;
-        isInFavourites = sng.isInUserFavorites;
-        return sng;
-      }
-
-    );
+    _song = Api.create().then((api) => api.getSongById(int.parse(widget.songID))).then((sng) {
+      _songFinal = sng;
+      isInFavourites = sng.isInUserFavorites;
+      return sng;
+    });
 
     Api.create().then((api) => api.getUserFullData()).then((user) => _user = user);
     Api.create().then((Api a) {
       api = a;
     });
-
-    // isInFavourites = _songFinal.isInUserFavorites;
-    _connectRegion = AppButton(
-      title: 'Выбрать режим',
-      onTap: () async {
-        bottomSheetBuilder(
-          children: [
-            Expanded(
-              child: PageView(
-                controller: controller,
-                onPageChanged: (page) {
-                  if(page == 0){
-                    setState(() {
-                      _micCount = 1;
-                    });
-                  }else{
-                    setState(() {
-                      _micCount = 2;
-                    });
-                  }
-                  print('page');
-                  print(page);
-                },
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          Image.asset(
-                            AppImage.mic1,
-                            fit: BoxFit.fill,
-                            // width: 180,
-                          ),
-                          Column(
-                            children: [
-                              Text(
-                                '1 микрофон',
-                                style: AppStyles.magistral25w500.copyWith(color: AppColors.white),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Классический режим',
-                                style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
-                              ),
-                              const SizedBox(height: 350),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: AppButton(
-                                  title: 'Начать',
-                                  onTap: ()  {
-                                    setState(() {
-                                      showChooseMicsRegion = false;
-                                      showConnectToBox = true;
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        alignment: Alignment.bottomCenter,
-                        children: [
-                          Image.asset(
-                            AppImage.mic2,
-                            fit: BoxFit.cover,
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '2 микрофона',
-                                style: AppStyles.magistral25w500.copyWith(color: AppColors.white),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Режим соревнования с друзьями!',
-                                style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
-                              ),
-                              const SizedBox(height: 350),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                child: AppButton(
-                                  title: 'Начать',
-                                  onTap: ()  {
-                                    setState(() {
-                                      showChooseMicsRegion = false;
-                                      showConnectToBox = true;
-                                    });
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SmoothPageIndicator(
-              controller: controller,
-              count: 2,
-              effect: ExpandingDotsEffect(
-                dotColor: AppColors.white.withOpacity(0.2),
-                activeDotColor: AppColors.white,
-                dotWidth: 10,
-                strokeWidth: 20,
-                dotHeight: 10,
-              ),
-            ),
-          ],
-        );
-      },
-    );
-    _connectToBox =  AppButton(
-      title: 'Подключить приставку',
-      onTap: ()  async {
-        bottomSheetBuilder(
-          children: [
-            Text(
-              'Поиск устройств',
-              style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
-            ),
-            const SizedBox(height: 20),
-            GestureDetector(
-              onTap: () => Navigator.of(context).pop(1),
-              child: Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: AppColors.backgroundButtonGradient1.withOpacity(0.05),
-                  shape: BoxShape.circle,
-                ),
-                child: Container(
-                  padding: const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundButtonGradient1.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundButtonGradient1.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: AppColors.backgroundButtonGradient1.withOpacity(0.3),
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Поиск Dauys Karaoke Box',
-              style: AppStyles.magistral14w400.copyWith(color: AppColors.white.withOpacity(0.4)),
-            ),
-          ],
-        );
-
-        bool isConnected = false;
-
-        client = SocketService(
-          _user,
-          _songFinal,
-          _micCount
-        );
-        await client.configure();
-
-        for(int i = 0; i <=5; i++) {
-          sleep(const Duration(seconds: 3));
-          print('trying to connect from another class');
-          if(client.isConnected()) {
-            isConnected = true;
-            print('connected from another class');
-            break;
-          }
-          print('client is not connected');
-        }
-
-        if (isConnected) {
-          setState(() {
-            showChooseMicsRegion = false;
-            showPlayer = true;
-            showConnectToBox = false;
-          });
-          await Future.delayed(const Duration(seconds: 4));
-          Navigator.pop(context);
-        }
-      },
-    );
-    _player = Row(
-          children: [
-            const Spacer(),
-            const SizedBox(width: 50),
-            GestureDetector(
-              onTap: () {
-                if(_isPlaying){
-                  client.onPause();
-                }
-                if(!_isPlaying && _progressInSec != 0){
-                  client.onResume();
-                }
-                if(!_isPlaying && _progressInSec == 0){
-                  client.onPlay();
-                  _progressInSec = 1;
-                }
-                setState(() {
-                  _isPlaying = !_isPlaying;
-                });
-                print('Playing (after touch:) $_isPlaying');
-              },
-              child: _isPlaying
-                  ? SvgPicture.asset(
-                  AppSvg.pauseBig,
-                  height: 60,
-                  width: 60,
-                )
-                : SvgPicture.asset(
-                  AppSvg.playBig,
-                  height: 60,
-                  width: 60,
-                ),
-            ),
-            const SizedBox(width: 50),
-            const Spacer(),
-          ],
-        );
   }
-
 
   void toggleFavorite() {
     bool newFavVal = !isInFavourites;
 
-    if(api is Api){
+    if (api is Api) {
       api?.toggleFavourites(_songFinal.id, newFavVal);
     }
     setState(() {
@@ -341,6 +94,235 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      _connectRegion = AppButton(
+        title: FlutterI18n.translate(context, "song_preview.select_mode"), // заменено
+        onTap: () async {
+          bottomSheetBuilder(
+            children: [
+              Expanded(
+                child: PageView(
+                  controller: controller,
+                  onPageChanged: (page) {
+                    setState(() {
+                      _micCount = page == 0 ? 1 : 2;
+                    });
+                  },
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            Image.asset(
+                              AppImage.mic1,
+                              fit: BoxFit.fill,
+                            ),
+                            Column(
+                              children: [
+                                Text(
+                                  FlutterI18n.translate(context, "song_preview.one_microphone"), // заменено
+                                  style: AppStyles.magistral25w500.copyWith(color: AppColors.white),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  FlutterI18n.translate(context, "song_preview.classic_mode"), // заменено
+                                  style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
+                                ),
+                                const SizedBox(height: 350),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: AppButton(
+                                    title: FlutterI18n.translate(context, "song_preview.start"), // заменено
+                                    onTap: () {
+                                      setState(() {
+                                        showChooseMicsRegion = false;
+                                        showConnectToBox = true;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          alignment: Alignment.bottomCenter,
+                          children: [
+                            Image.asset(
+                              AppImage.mic2,
+                              fit: BoxFit.cover,
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  FlutterI18n.translate(context, "song_preview.two_microphones"), // заменено
+                                  style: AppStyles.magistral25w500.copyWith(color: AppColors.white),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  FlutterI18n.translate(context, "song_preview.competition_mode"), // заменено
+                                  style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
+                                ),
+                                const SizedBox(height: 350),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: AppButton(
+                                    title: FlutterI18n.translate(context, "song_preview.start"), // заменено
+                                    onTap: () {
+                                      setState(() {
+                                        showChooseMicsRegion = false;
+                                        showConnectToBox = true;
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SmoothPageIndicator(
+                controller: controller,
+                count: 2,
+                effect: ExpandingDotsEffect(
+                  dotColor: AppColors.white.withOpacity(0.2),
+                  activeDotColor: AppColors.white,
+                  dotWidth: 10,
+                  strokeWidth: 20,
+                  dotHeight: 10,
+                ),
+              ),
+            ],
+          );
+        },
+      );
+
+      _connectToBox = AppButton(
+        title: FlutterI18n.translate(context, "song_preview.connect_device"), // заменено
+        onTap: () async {
+          bottomSheetBuilder(
+            children: [
+              Text(
+                FlutterI18n.translate(context, "song_preview.searching_devices"), // заменено
+                style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () => Navigator.of(context).pop(1),
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: AppColors.backgroundButtonGradient1.withOpacity(0.05),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: AppColors.backgroundButtonGradient1.withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundButtonGradient1.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: AppColors.backgroundButtonGradient1.withOpacity(0.3),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                FlutterI18n.translate(context, "song_preview.searching_dauys_box"), // заменено
+                style: AppStyles.magistral14w400.copyWith(color: AppColors.white.withOpacity(0.4)),
+              ),
+            ],
+          );
+
+          bool isConnected = false;
+
+          client = SocketService(_user, _songFinal, _micCount);
+          await client.configure();
+
+          for (int i = 0; i <= 5; i++) {
+            sleep(const Duration(seconds: 3));
+            if (client.isConnected()) {
+              isConnected = true;
+              break;
+            }
+          }
+
+          if (isConnected) {
+            setState(() {
+              showChooseMicsRegion = false;
+              showPlayer = true;
+              showConnectToBox = false;
+            });
+            await Future.delayed(const Duration(seconds: 4));
+            Navigator.pop(context);
+          }
+        },
+      );
+
+      _player = Row(
+        children: [
+          const Spacer(),
+          const SizedBox(width: 50),
+          GestureDetector(
+            onTap: () {
+              if (_isPlaying) {
+                client.onPause();
+              }
+              if (!_isPlaying && _progressInSec != 0) {
+                client.onResume();
+              }
+              if (!_isPlaying && _progressInSec == 0) {
+                client.onPlay();
+                _progressInSec = 1;
+              }
+              setState(() {
+                _isPlaying = !_isPlaying;
+              });
+            },
+            child: _isPlaying
+                ? SvgPicture.asset(
+              AppSvg.pauseBig,
+              height: 60,
+              width: 60,
+            )
+                : SvgPicture.asset(
+              AppSvg.playBig,
+              height: 60,
+              width: 60,
+            ),
+          ),
+          const SizedBox(width: 50),
+          const Spacer(),
+        ],
+      );
+    });
+
     final starNotFav = GestureDetector(
       onTap: toggleFavorite,
       child: Image.asset(
@@ -350,7 +332,6 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
         color: AppColors.white,
       ),
     );
-
 
     final starFav = GestureDetector(
       onTap: toggleFavorite,
@@ -362,28 +343,27 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
       ),
     );
 
-
     return AppScaffold(
       safeAreaTop: false,
       body: FutureBuilder<SongNew>(
-        future: _song, // Use the future for fetching the song
+        future: _song,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(
-                child: Text(
-                  'Error: ${snapshot.error} ${snapshot.toString()}',
-                  style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
-                )
+              child: Text(
+                FlutterI18n.translate(context, "song_preview.error",), // заменено
+                style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
+              ),
             );
           }
           if (!snapshot.hasData) {
             return const Center(child: Text('No data available'));
           }
 
-          final song = snapshot.data!; // Get the song data
+          final song = snapshot.data!;
 
           return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -406,7 +386,7 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                             width: 32,
                             alignment: Alignment.center,
                             child: const Icon(
-                              Icons.keyboard_arrow_down, // TODO: Replace with asset icon
+                              Icons.keyboard_arrow_down,
                               size: 20,
                               color: AppColors.white,
                             ),
@@ -455,7 +435,7 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Image.network(
-                    ImageAWS.getImageURI(song.songImageUri),// Use the fetched image URL
+                    ImageAWS.getImageURI(song.songImageUri),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -471,7 +451,7 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            song.name, // Use the fetched album name
+                            song.name,
                             style: AppStyles.magistral20w700.copyWith(color: AppColors.white),
                           ),
                           const SizedBox(height: 2),
@@ -540,33 +520,9 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const SizedBox(height: 20),
-                  if(showChooseMicsRegion) _connectRegion,
-                  if(showConnectToBox) _connectToBox,
+                  if (showChooseMicsRegion) _connectRegion,
+                  if (showConnectToBox) _connectToBox,
                   if (showPlayer) _player,
-                  // Row(
-                  //   children: [
-                  //     const Spacer(),
-                  //     SvgPicture.asset(
-                  //       AppSvg.skipPrev,
-                  //       height: 24,
-                  //       width: 27.26,
-                  //     ),
-                  //     const SizedBox(width: 50),
-                  //     SvgPicture.asset(
-                  //       AppSvg.playBig,
-                  //       height: 60,
-                  //       width: 60,
-                  //     ),
-                  //     const SizedBox(width: 50),
-                  //     SvgPicture.asset(
-                  //       AppSvg.skipNext,
-                  //       height: 24,
-                  //       width: 27.26,
-                  //     ),
-                  //     const Spacer(),
-                  //   ],
-                  // ),
                   const SizedBox(height: 30),
                   SizedBox(
                     width: 400,
@@ -580,13 +536,13 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Текст',
+                            FlutterI18n.translate(context, "song_preview.text"), // заменено
                             style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
                           ),
                           buildLine(song.songText),
                         ],
                       ),
-                    )
+                    ),
                   ),
                 ],
               ),
@@ -612,22 +568,19 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
   );
 
   String formatDuration(String secondsString) {
-    // Parse the input string to a double
     secondsString = secondsString.replaceFirst(',', '.');
     double totalSeconds = 0.0;
 
-    try{
-      double totalSeconds = double.parse(secondsString);
-    }catch (e){
+    try {
+      totalSeconds = double.parse(secondsString);
+    } catch (e) {
       print(secondsString);
       throw e;
     }
 
-    // Convert total seconds to minutes and seconds
-    int minutes = totalSeconds ~/ 60; // Integer division for minutes
-    int seconds = (totalSeconds % 60).toInt(); // Convert remainder to int
+    int minutes = totalSeconds ~/ 60;
+    int seconds = (totalSeconds % 60).toInt();
 
-    // Format as mm:ss
     String formatted = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
 
     return formatted;
@@ -660,7 +613,4 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
       ),
     ),
   );
-
 }
-
-

@@ -15,6 +15,7 @@ import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/features/profile/favorites_screen.dart';
 import 'package:dauys_remote/features/profile/history_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../core/helpers/ImageAWS.dart';
@@ -37,7 +38,7 @@ class MyPlaylistsScreen extends StatefulWidget {
 
 class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
   int favSongsCount = 0;
-  String favSongTitle = 'Избранное';
+  String favSongTitle = 'Избранное'; // будет заменено
   String favSongType = 'svg';
   String favSongIcon = AppSvg.star;
   List<Color> favSonColors = const [
@@ -47,7 +48,7 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
   ];
 
   int historySongsCount = 0;
-  String historySongTitle = 'История';
+  String historySongTitle = 'История'; // будет заменено
   String historySongType = 'image';
   String historySongIcon = AppIcons.history;
   List<Color> historySonColors = const [
@@ -57,7 +58,7 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
   ];
 
   int evaluatedSongsCount = 0;
-  String evaluatedSongTitle = 'Ваши оценки';
+  String evaluatedSongTitle = 'Ваши оценки'; // будет заменено
   String evaluatedSongType = 'image';
   String evaluatedSongIcon = AppIcons.heart;
   List<Color> evaluatedSonColors = const [
@@ -72,9 +73,9 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
   bool _fetchingUserCollections = true;
 
   Widget _title(String title) => Text(
-        title,
-        style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
-      );
+    title,
+    style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
+  );
 
   openPlaylist(Collection collection, BuildContext context) {
     Navigator.push(
@@ -100,30 +101,27 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
 
   @override
   void initState() {
-    Api.create().then((api){
-      api.getFavourites().then((fav){
-       var songs = SearchResults.fromJson(fav);
-       setState(() {
-         favSongsCount = songs.searchCount;
-       });
+    Api.create().then((api) {
+      api.getFavourites().then((fav) {
+        var songs = SearchResults.fromJson(fav);
+        setState(() {
+          favSongsCount = songs.searchCount;
+        });
       });
 
-
-      api.getHistory().then((fav){
+      api.getHistory().then((fav) {
         var songs = SearchResults.fromJson(fav);
         setState(() {
           historySongsCount = songs.searchCount;
         });
       });
 
-
-      api.getEvaluated().then((fav){
+      api.getEvaluated().then((fav) {
         var songs = SearchResults.fromJson(fav);
         setState(() {
           evaluatedSongsCount = songs.searchCount;
         });
       });
-
 
       api.getAllCollections().then((collections) {
         setState(() {
@@ -131,7 +129,6 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
           _collections = collections;
         });
       });
-
 
       api.getAllUserCollections().then((userCollections) {
         setState(() {
@@ -143,7 +140,6 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
     super.initState();
   }
 
-
   String truncateText(String text, {int length = 11}) {
     if (text.length > length) {
       return '${text.substring(0, length)}...';
@@ -154,7 +150,6 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return AppScaffold(
       safeAreaTop: false,
       disableBackgroundColorSpots: true,
@@ -162,7 +157,7 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
         children: [
           const TopSpacer(),
           AuthTopPanel(
-            title: 'Мои плейлисты',
+            title: FlutterI18n.translate(context, "my_playlists.my_playlists"), // заменено
             action: AddButton(
               onTap: () {
                 Navigator.push(
@@ -171,12 +166,13 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                 );
               },
             ),
+            screenId: 2,
           ),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.only(left: 16, top: 50, bottom: 50),
               children: [
-                _title('Ваши плейлисты'),
+                _title(FlutterI18n.translate(context, "my_playlists.your_playlists")), // заменено
                 const SizedBox(height: 10),
                 Row(
                   children: [
@@ -215,23 +211,22 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                                     height: 60,
                                     width: 60,
                                     color: AppColors.white,
-                                  )
+                                  ),
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  favSongTitle,
+                                  FlutterI18n.translate(context, "my_playlists.favorite"), // заменено
                                   style: AppStyles.magistral14w700.copyWith(color: Colors.white),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  favSongsCount.toSongString(),
+                                  favSongsCount.toSongString(context),
                                   style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
                                 ),
                               ],
                             ),
                           ),
-                        )
-                    ),
+                        )),
                     const SizedBox(width: 10),
                     SizedBox(
                         height: 165,
@@ -263,7 +258,7 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                                     ),
                                   ),
                                   alignment: Alignment.center,
-                                  child:  Image.asset(
+                                  child: Image.asset(
                                     historySongIcon,
                                     height: 60,
                                     width: 60,
@@ -272,19 +267,18 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  historySongTitle,
+                                  FlutterI18n.translate(context, "my_playlists.history"), // заменено
                                   style: AppStyles.magistral14w700.copyWith(color: Colors.white),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  historySongsCount.toSongString(),
+                                  historySongsCount.toSongString(context),
                                   style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
                                 ),
                               ],
                             ),
                           ),
-                        )
-                    ),
+                        )),
                     const SizedBox(width: 10),
                     SizedBox(
                         height: 165,
@@ -316,7 +310,7 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                                     ),
                                   ),
                                   alignment: Alignment.center,
-                                  child:  Image.asset(
+                                  child: Image.asset(
                                     evaluatedSongIcon,
                                     height: 60,
                                     width: 60,
@@ -325,38 +319,37 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                                 ),
                                 const SizedBox(height: 10),
                                 Text(
-                                  evaluatedSongTitle,
+                                  FlutterI18n.translate(context, "my_playlists.evaluated"), // заменено
                                   style: AppStyles.magistral14w700.copyWith(color: Colors.white),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  evaluatedSongsCount.toSongString(),
+                                  evaluatedSongsCount.toSongString(context),
                                   style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
                                 ),
                               ],
                             ),
                           ),
-                        )
-                    ),
+                        )),
                   ],
                 ),
 
                 const SizedBox(height: 30),
 
-                _title('Ваши альбомы'),
+                _title(FlutterI18n.translate(context, "my_playlists.your_albums")), // заменено
                 const SizedBox(height: 10),
                 _fetchingUserCollections
                     ? const Center(
                   child: CircularProgressIndicator(),
                 )
-                    :  SizedBox(
+                    : SizedBox(
                   height: 165,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemCount: _userCollections.length,
                     itemBuilder: (context, index) => GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTap: () => openUserPlaylist(_userCollections[index], context),//openPlaylist(recommendation[index], context),
+                      onTap: () => openUserPlaylist(_userCollections[index], context),
                       child: SizedBox(
                         height: 165,
                         width: 120,
@@ -365,13 +358,12 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(5),
-                              child:  Image.network(
+                              child: Image.network(
                                 ImageAWS.getImageURI(
                                     _userCollections[index].playlistSongsCount == 0
-                                    ? null
-                                    : _userCollections[index].songs[0]?.songImageUri ?? '',
-                                  text: _userCollections[index].playListName
-                                ),
+                                        ? null
+                                        : _userCollections[index].songs[0]?.songImageUri ?? '',
+                                    text: _userCollections[index].playListName),
                                 height: 120,
                                 width: 120,
                                 fit: BoxFit.cover,
@@ -384,7 +376,7 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              (_userCollections[index].playlistSongsCount).toSongString(),
+                              (_userCollections[index].playlistSongsCount).toSongString(context),
                               style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
                             ),
                           ],
@@ -395,13 +387,13 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                _title('Рекомендуем'),
+                _title(FlutterI18n.translate(context, "my_playlists.recommended")), // заменено
                 const SizedBox(height: 10),
                 _fetchingRecommended
-                ? const Center(
+                    ? const Center(
                   child: CircularProgressIndicator(),
                 )
-                : SizedBox(
+                    : SizedBox(
                   height: 180,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
@@ -431,7 +423,7 @@ class _MyPlaylistsScreenState extends State<MyPlaylistsScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              _collections[index].songsCount.toSongString(),
+                              _collections[index].songsCount.toSongString(context),
                               style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
                             ),
                           ],

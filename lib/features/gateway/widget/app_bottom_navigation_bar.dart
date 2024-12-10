@@ -2,12 +2,13 @@ import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/theme/app_gradients.dart';
 import 'package:dauys_remote/features/gateway/widget/app_bottom_navigation_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class AppBottomNavigationBar extends StatefulWidget {
   const AppBottomNavigationBar({
     super.key,
     required this.onChange,
-    required this.currentIndex
+    required this.currentIndex,
   });
 
   final void Function(int index) onChange;
@@ -25,6 +26,7 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
     currentIndex = widget.currentIndex;
     super.initState();
   }
+
   void setIndex(int index) {
     setState(() {
       currentIndex = index;
@@ -43,19 +45,19 @@ class _AppBottomNavigationBarState extends State<AppBottomNavigationBar> {
       child: Row(
         children: [
           AppBottomNavigationItem(
-            title: 'Главная',
+            title: FlutterI18n.translate(context, "bottom_navigation.home"), // заменено
             icon: AppIcons.home,
             isActive: currentIndex == 0,
             onTap: () => setIndex(0),
           ),
           AppBottomNavigationItem(
-            title: 'Поиск',
+            title: FlutterI18n.translate(context, "bottom_navigation.search"), // заменено
             icon: AppIcons.search,
             isActive: currentIndex == 1,
             onTap: () => setIndex(1),
           ),
           AppBottomNavigationItem(
-            title: 'Профиль',
+            title: FlutterI18n.translate(context, "bottom_navigation.profile"), // заменено
             icon: AppIcons.profile,
             isActive: currentIndex == 2,
             onTap: () => setIndex(2),

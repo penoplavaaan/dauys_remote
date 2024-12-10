@@ -3,9 +3,9 @@ import 'package:dauys_remote/core/constants/regex.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/core/widget/app_text_input.dart';
-import 'package:dauys_remote/features/auth/new_account_screen2.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../profile/my_playlists_screen.dart';
 
@@ -29,7 +29,7 @@ class _NewPlaylistScreenState extends State<NewPlaylistScreen> {
   }
 
   String? validateName(String? value) {
-    if (value == null || value.isEmpty) return 'Введите название';
+    if (value == null || value.isEmpty) return FlutterI18n.translate(context, "new_playlist.empty_name"); // заменено
 
     return null;
   }
@@ -39,7 +39,7 @@ class _NewPlaylistScreenState extends State<NewPlaylistScreen> {
     return AppScaffold(
       body: Column(
         children: [
-          const AuthTopPanel(title: 'Новый плейлист'),
+          AuthTopPanel(title: FlutterI18n.translate(context, "new_playlist.title")), // заменено
           const SizedBox(height: 40),
           Form(
             key: _formKey,
@@ -51,30 +51,26 @@ class _NewPlaylistScreenState extends State<NewPlaylistScreen> {
                   children: [
                     AppTextInput(
                       controller: controller,
-                      hintText: 'Название плейлиста',
+                      hintText: FlutterI18n.translate(context, "new_playlist.hint"), // заменено
                       validator: validateName,
                     ),
                     const SizedBox(height: 30),
                     AppButton(
-                      title: 'Далее',
+                      title: FlutterI18n.translate(context, "new_playlist.next"), // заменено
                       width: 130,
                       onTap: isFormValid
                           ? () {
-                              Api.create().then((api){
-                                api.createNewPlaylist(controller.text).then((res){
-                                    if(res == true){
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => const MyPlaylistsScreen())
-                                      );
-                                    }
-                                });
-                              });
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => const NewAccountScreen2()),
-                              // );
+                        Api.create().then((api) {
+                          api.createNewPlaylist(controller.text).then((res) {
+                            if (res == true) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const MyPlaylistsScreen()),
+                              );
                             }
+                          });
+                        });
+                      }
                           : null,
                     ),
                   ],

@@ -107,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                (collection.songsCount).toSongString(),
+                                (collection.songsCount).toSongString(context),
                                 style: AppStyles.magistral12w400.copyWith(color: Colors.white.withOpacity(0.5)),
                               ),
                             ],

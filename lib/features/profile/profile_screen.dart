@@ -13,6 +13,7 @@ import 'package:dauys_remote/features/profile/settings_screen.dart';
 import 'package:dauys_remote/features/profile/widget/profile_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../api/api.dart';
 import '../../core/constants/app_image.dart';
@@ -100,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       },
                       behavior: HitTestBehavior.opaque,
-                       child: Image.asset(
+                      child: Image.asset(
                         AppIcons.settings,
                         height: 14,
                         width: 14,
@@ -192,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 const SizedBox(width: 10),
                                 GradientOverlay(
                                   child: Text(
-                                    'Премиум пользователь',
+                                    FlutterI18n.translate(context, "profile.premium_user"),
                                     style: AppStyles.magistral14w400.copyWith(color: AppColors.white),
                                   ),
                                 ),
@@ -209,52 +210,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Expanded(
                 child: ListView(
                   children: [
-                    const Row(
+                    Row(
                       children: [
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         ProfileTile(
-                          title: 'Мои данные',
+                          title: FlutterI18n.translate(context, "profile.my_data"),
                           icon: AppIcons.clowd,
                           page: MyDataScreen(),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         ProfileTile(
-                          title: 'Избранное',
+                          title: FlutterI18n.translate(context, "profile.favorites"),
                           icon: AppIcons.starOutlined,
-                          // page: null
                           page: FavoritesScreen(),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const Row(
+                    Row(
                       children: [
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         ProfileTile(
-                          title: 'История',
+                          title: FlutterI18n.translate(context, "profile.history"),
                           icon: AppIcons.history,
                           page: HistoryScreen(),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         ProfileTile(
-                          title: 'Мои плейлисты',
+                          title: FlutterI18n.translate(context, "profile.my_playlists"),
                           icon: AppIcons.record,
                           page: MyPlaylistsScreen(),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const Row(
+                    Row(
                       children: [
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         ProfileTile(
-                          title: 'Настройки',
+                          title: FlutterI18n.translate(context, "profile.settings"),
                           icon: AppIcons.settings,
                           page: SettingsScreen(),
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -262,7 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onTap: () async {
                         final localStorage = LocalStorage();
                         await localStorage.clearCredentials();
-                        if (context.mounted){
+                        if (context.mounted) {
                           Phoenix.rebirth(context);
                         }
                       },
@@ -279,7 +279,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            'Выйти',
+                            FlutterI18n.translate(context, "profile.logout"),
                             style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
                           ),
                         ],

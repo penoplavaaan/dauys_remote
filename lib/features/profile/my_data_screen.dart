@@ -3,6 +3,7 @@ import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/api/api.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../core/widget/app_button.dart';
 import '../../core/widget/app_text_input.dart'; // Подключаем API
@@ -55,7 +56,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
         _phoneController.text = user.mobile ?? '';
         _nameController.text = user.username ?? '';
         _emailController.text = user.userMail ?? '';
-        _dataFetched  = true;
+        _dataFetched = true;
       });
     } catch (error) {
       print('Error fetching user data: $error');
@@ -80,12 +81,12 @@ class _MyDataScreenState extends State<MyDataScreen> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Данные успешно сохранены!')),
+        SnackBar(content: Text(FlutterI18n.translate(context, "my_data.data_saved_successfully"))),
       );
     } catch (error) {
       print('Error saving user data: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Ошибка при сохранении данных!')),
+        SnackBar(content: Text(FlutterI18n.translate(context, "my_data.error_saving_data"))),
       );
     } finally {
       setState(() {
@@ -104,7 +105,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
         child: ListView(
           children: [
             const TopSpacer(),
-            const AuthTopPanel(title: 'Мои данные'),
+            AuthTopPanel(title: FlutterI18n.translate(context, "my_data.my_data"), screenId: 2,),
             const SizedBox(height: 30),
             Form(
               key: _formKey,
@@ -112,36 +113,27 @@ class _MyDataScreenState extends State<MyDataScreen> {
                 children: [
                   AppTextInput(
                     controller: _nameController,
-                    hintText: 'Ваше имя',
+                    hintText: FlutterI18n.translate(context, "my_data.your_name"),
                     validator: null,
                   ),
-                  // _buildTextField('Ваше имя', _nameController, false),
                   const SizedBox(height: 10),
                   AppTextInput(
                     controller: _emailController,
-                    hintText: 'Эл. адрес',
+                    hintText: FlutterI18n.translate(context, "my_data.email_address"),
                     validator: null,
                   ),
-                  // _buildTextField('Эл. адрес', _emailController, true),
                   const SizedBox(height: 10),
                   AppTextInput(
                     controller: _phoneController,
-                    hintText: 'Номер телефона',
+                    hintText: FlutterI18n.translate(context, "my_data.phone_number"),
                     validator: null,
                   ),
-                  // _buildTextField('Номер телефона', _phoneController, true),
                 ],
               ),
             ),
             const SizedBox(height: 20),
-            // ElevatedButton(
-            //   onPressed: _isSaving ? null : _saveUserData,
-            //   child: _isSaving
-            //       ? const CircularProgressIndicator(color: Colors.white)
-            //       : const Text('Сохранить'),
-            // ),
             AppButton(
-              title: 'Сохранить',
+              title: FlutterI18n.translate(context, "my_data.save"),
               width: 130,
               onTap: _isSaving || !_dataFetched ? null : _saveUserData,
             ),
@@ -162,7 +154,7 @@ class _MyDataScreenState extends State<MyDataScreen> {
       keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Поле $label не может быть пустым';
+          return FlutterI18n.translate(context, "my_data.field_cannot_be_empty");
         }
         return null;
       },

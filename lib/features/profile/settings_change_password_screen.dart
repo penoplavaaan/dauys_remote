@@ -5,6 +5,7 @@ import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
 import 'package:dauys_remote/features/auth/widget/password_input.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_styles.dart';
@@ -43,31 +44,31 @@ class _SettingsChangePasswordScreenState extends State<SettingsChangePasswordScr
       body: Column(
         children: [
           const TopSpacer(),
-          const AuthTopPanel(title: 'Сменить пароль'),
+          AuthTopPanel(title: FlutterI18n.translate(context, "settings_password.change_password"), screenId: 2,), // заменено
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
               children: [
-                _title('Если вы входили ТОЛЬКО через Google, оставьте пустым:'),
+                _title(FlutterI18n.translate(context, "settings_password.google_only")), // заменено
                 const SizedBox(height: 10),
                 NullablePasswordInput(
                   controller: controllerOldPassword,
-                  hintText: 'Введите старый пароль',
+                  hintText: FlutterI18n.translate(context, "settings_password.enter_old_password"), // заменено
                 ),
                 const SizedBox(height: 30),
                 PasswordInput(
                   controller: controllerNewPassord,
-                  hintText: 'Новый пароль',
+                  hintText: FlutterI18n.translate(context, "settings_password.new_password"), // заменено
                 ),
                 const SizedBox(height: 10),
                 PasswordInput(
                   controller: controllerRepeatPassword,
-                  hintText: 'Повторите пароль',
+                  hintText: FlutterI18n.translate(context, "settings_password.repeat_password"), // заменено
                 ),
                 const SizedBox(height: 30),
                 Center(
                   child: AppButton(
-                    title: 'Сохранить',
+                    title: FlutterI18n.translate(context, "settings_password.save"), // заменено
                     onTap: () async {
                       final api = await Api.create();
                       final res = await api.changePassword(
@@ -75,18 +76,12 @@ class _SettingsChangePasswordScreenState extends State<SettingsChangePasswordScr
                         newPassword: controllerNewPassord.text,
                         newPasswordRepeat: controllerRepeatPassword.text,
                       );
-                      if(res == true) {
+                      if (res == true) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Пароль успешно сохранен!')),
+                          const SnackBar(content: Text('Пароль успешно изменен')), // можно оставить на русском или заменить на перевод
                         );
-                        return;
                       }
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Ошибка сохранения пароля')),
-                      );
                     },
-                    width: 150,
                   ),
                 ),
               ],

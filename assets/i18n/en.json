@@ -2,5 +2,108 @@
   "hello": "Hello",
   "welcome": "Welcome to my app!",
   "daily_recommendations": "Daily recommendations",
-  "lang": "English"
+  "lang": "English",
+  "settings": {
+    "security": "SECURITY",
+    "change_password": "Change Password",
+    "connection": "CONNECTION",
+    "connected_devices": "Connected Devices",
+    "application": "APPLICATION",
+    "change_language": "Change Language",
+    "terms_of_use": "Terms of Use",
+    "privacy_policy": "Privacy Policy"
+  },
+  "profile": {
+    "premium_user": "Premium User",
+    "my_data": "My Data",
+    "favorites": "Favorites",
+    "history": "History",
+    "my_playlists": "My Playlists",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "my_data": {
+    "my_data": "My Data",
+    "your_name": "Your Name",
+    "email_address": "Email Address",
+    "phone_number": "Phone Number",
+    "save": "Save",
+    "data_saved_successfully": "Data saved successfully!",
+    "error_saving_data": "Error saving data!",
+    "field_cannot_be_empty": "Field {0} cannot be empty"
+  },
+  "my_playlists": {
+    "my_playlists": "My Playlists",
+    "your_playlists": "Your Playlists",
+    "favorite": "Favorites",
+    "history": "History",
+    "evaluated": "Your Ratings",
+    "your_albums": "Your Albums",
+    "recommended": "Recommended"
+  },
+  "settings_password": {
+    "change_password": "Change Password",
+    "google_only": "If you logged in ONLY through Google, leave it empty:",
+    "enter_old_password": "Enter old password",
+    "new_password": "New password",
+    "repeat_password": "Repeat password",
+    "save": "Save"
+  },
+  "history": {
+    "title": "History",
+    "loading": "... songs",
+    "last_month": "in the last month",
+    "empty_message": "There are no favorites yet. \nTry adding songs, and they will appear on this screen!"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "loading": "... songs",
+    "empty_message": "There are no favorites yet. \nTry adding songs, and they will appear on this screen!"
+  },
+  "song_preview": {
+    "select_mode": "Select Mode",
+    "one_microphone": "1 Microphone",
+    "classic_mode": "Classic Mode",
+    "two_microphones": "2 Microphones",
+    "competition_mode": "Competition Mode with Friends!",
+    "start": "Start",
+    "connect_device": "Connect Device",
+    "searching_devices": "Searching for Devices",
+    "searching_dauys_box": "Searching for Dauys Karaoke Box",
+    "error": "Error: {0}",
+    "text": "Lyrics"
+  },
+  "bottom_navigation": {
+    "home": "Home",
+    "search": "Search",
+    "profile": "Profile"
+  },
+  "search": {
+    "hint": "What song are you looking for?",
+    "no_results": "It seems nothing was found. \nShall we try again?",
+    "history_recent": "You recently searched",
+    "history_empty": "This will be your search history",
+    "ready": "Ready"
+
+  },
+  "evaluated": {
+    "title": "Evaluated Songs",
+    "loading": "songs",
+    "count": "with a rating above 4",
+    "empty_message": "There are currently no favorites. \nTry adding songs, and they will appear on this screen!"
+  },
+  "new_playlist": {
+    "title": "New Playlist",
+    "hint": "Playlist Name",
+    "empty_name": "Please enter a name",
+    "next": "Next"
+  },
+  "playlist": {
+    "delete_song_title": "Delete Song",
+    "yes": "Yes",
+    "no": "No",
+    "song_removed": "Song removed from playlist",
+    "really_delete": "Are you sure you want to remove the song from the playlist?"
+
+  }
 }

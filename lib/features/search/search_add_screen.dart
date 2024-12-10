@@ -8,6 +8,7 @@ import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/features/search/search_history.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../core/helpers/ImageAWS.dart';
 import '../../core/widget/app_button.dart';
@@ -112,7 +113,7 @@ class _SearchAddScreenState extends State<SearchAddScreen> {
               cursorErrorColor: AppColors.white.withOpacity(0.5),
               decoration: InputDecoration(
                 constraints: const BoxConstraints(maxHeight: 44, maxWidth: double.infinity, minHeight: 44),
-                hintText: 'Какую песню ищете?',
+                hintText: FlutterI18n.translate(context, "search.hint"), // заменено
                 hintStyle: AppStyles.magistral16w500.copyWith(color: AppColors.white.withOpacity(0.5)),
                 contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
                 filled: true,
@@ -147,12 +148,12 @@ class _SearchAddScreenState extends State<SearchAddScreen> {
           else if (songs.searchCount == 0) ...[
             searching ?  const Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator(),),
             )
             : Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Text(
-                'Кажется, ничего не нашлось. \nПопробуем еще раз?',
+                FlutterI18n.translate(context, "search.no_results"), // заменено
                 style: AppStyles.magistral16w500.copyWith(
                     color: AppColors.white.withOpacity(0.5),
                 ),
@@ -201,7 +202,7 @@ class _SearchAddScreenState extends State<SearchAddScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             child: AppButton(
-                title: 'Готово',
+                title: FlutterI18n.translate(context, "search.ready"),
                 width: 130,
                 onTap: () => Navigator.pushAndRemoveUntil(
                   context,

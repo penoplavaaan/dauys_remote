@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../storage/local_storage.dart';
+import '../gateway/gateway_screen.dart';
+
 class SettingsChangeLanguageScreen extends StatefulWidget {
   const SettingsChangeLanguageScreen({
     super.key,
@@ -18,6 +21,7 @@ class SettingsChangeLanguageScreen extends StatefulWidget {
 }
 
 class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScreen> {
+  LocalStorage storage = LocalStorage();
   List<String> languages = [
     'Русский',
     'қазақша',
@@ -25,7 +29,6 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
   ];
 
   int selectedLanguage = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
         case 'ru':
           selectedLanguage = 0;
           break;
-        case 'kz':
+        case 'kk':
           selectedLanguage = 1;
           break;
         case 'en':
@@ -65,19 +68,26 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
               shrinkWrap: true,
               itemCount: languages.length,
               itemBuilder: (context, index) => GestureDetector(
-                onTap: () => setState(() {
-                  print(index);
+                onTap: () async {
+                  setState(() {
+                    selectedLanguage = index;
+                  });
+
                   if(index == 0){
-                    _changeLanguage(Locale('ru'));
+                    await _changeLanguage(Locale('ru'));
                   }
                   if(index == 1){
-                    _changeLanguage(Locale('kz'));
+                    await _changeLanguage(Locale('kk'));
                   }
                   if(index == 2){
-                    _changeLanguage(Locale('en'));
+                    await _changeLanguage(Locale('en'));
                   }
-                  selectedLanguage = index;
-                }),
+
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const GateWayScreen(index: 2,)),
+                  );
+                },
                 behavior: HitTestBehavior.opaque,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -111,7 +121,8 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
     );
   }
 
-  void _changeLanguage(Locale locale) {
+  Future<void> _changeLanguage(Locale locale) async {
     FlutterI18n.refresh(context, locale);
+    return await storage.setLocale(locale.languageCode);
   }
 }

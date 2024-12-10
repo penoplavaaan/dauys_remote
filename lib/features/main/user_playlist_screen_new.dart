@@ -1,4 +1,3 @@
-
 import 'package:dauys_remote/api/api.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
@@ -10,12 +9,12 @@ import 'package:dauys_remote/features/profile/my_playlists_screen.dart';
 import 'package:dauys_remote/models/collection.dart';
 import 'package:dauys_remote/models/user_collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../core/helpers/ImageAWS.dart';
 import '../../core/widget/add_button.dart';
 import '../gateway/gateway_screen.dart';
 import '../search/search_add_screen.dart';
-
 
 class UserPlaylistScreenNew extends StatefulWidget {
   const UserPlaylistScreenNew({
@@ -42,17 +41,17 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Удаление песни'),
-            content: const SingleChildScrollView(
+            title: Text(FlutterI18n.translate(context, "playlist.delete_song_title")), // заменено
+            content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text('Вы точно хотите удалить песню из плейлиста?'),
+                  Text(FlutterI18n.translate(context, "playlist.really_delete")), // оставлено для перевода
                 ],
               ),
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Да'),
+                child: Text(FlutterI18n.translate(context, "playlist.yes")), // заменено
                 onPressed: () {
                   Api.create().then((api){
                     api.removeSongFromPlaylist(
@@ -61,7 +60,7 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
                     ).then((res){
                       if(res == true){
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Песня удалена из плейлиста')),
+                          SnackBar(content: Text(FlutterI18n.translate(context, "playlist.song_removed"))), // заменено
                         );
                       };
                       Navigator.pushReplacement(
@@ -73,7 +72,7 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
                 },
               ),
               TextButton(
-                child: const Text('Нет'),
+                child: Text(FlutterI18n.translate(context, "playlist.no")), // заменено
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -183,14 +182,13 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => SongPreviewScreenNew(
-                              songID: (userCollection.songs[index]?.id ?? '').toString(),
+                            songID: (userCollection.songs[index]?.id ?? '').toString(),
                           ),
                         ),
                       );
                     },
                     onLongTap: () async {
                       await _showMyDialog(index, context);
-
                       print('long tap');
                     },
                   ),
@@ -200,90 +198,6 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
               const SizedBox(height: 10),
             ],
           ),
-          // GestureDetector(
-          //   onTap: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => const SongPreviewScreenNew(songID: '1',),
-          //       ),
-          //     );
-          //   },
-          //   behavior: HitTestBehavior.opaque,
-          //   child: ClipRRect(
-          //     borderRadius: BorderRadius.circular(5),
-          //     child: Stack(
-          //       alignment: Alignment.bottomLeft,
-          //       children: [
-          //         const Blur(
-          //           blur: 10,
-          //           blurColor: AppColors.white,
-          //           colorOpacity: 0.2,
-          //           child: SizedBox(height: 59, width: double.infinity),
-          //         ),
-          //         Padding(
-          //           padding: const EdgeInsets.only(top: 8, bottom: 11, right: 8, left: 8),
-          //           child: Row(
-          //             children: [
-          //               ClipRRect(
-          //                 borderRadius: BorderRadius.circular(5),
-          //                 child: Image.network(
-          //                   ImageAWS.getImageURI(widget.collection.collectionImageAwsUuid),
-          //                   fit: BoxFit.cover,
-          //                   height: 40,
-          //                   width: 40,
-          //                 ),
-          //               ),
-          //               const SizedBox(width: 10),
-          //               Expanded(
-          //                 child: Column(
-          //                   mainAxisSize: MainAxisSize.min,
-          //                   crossAxisAlignment: CrossAxisAlignment.start,
-          //                   children: [
-          //                     Text(
-          //                       truncateText(widget.collection.name),
-          //                       style: AppStyles.magistral14w500.copyWith(color: AppColors.white),
-          //                     ),
-          //                     const SizedBox(height: 3),
-          //                     Text(
-          //                       truncateText(widget.collection.songsCount.toString()),
-          //                       style: AppStyles.magistral12w400.copyWith(color: AppColors.white.withOpacity(0.5)),
-          //                     ),
-          //                   ],
-          //                 ),
-          //               ),
-          //               const SizedBox(width: 10),
-          //               SvgPicture.asset(
-          //                 AppSvg.playMini,
-          //                 height: 30,
-          //                 width: 30,
-          //               ),
-          //               const SizedBox(width: 20),
-          //             ],
-          //           ),
-          //         ),
-          //         Container(
-          //           margin: const EdgeInsets.symmetric(horizontal: 8),
-          //           height: 3,
-          //           width: double.infinity,
-          //           decoration: BoxDecoration(
-          //             color: AppColors.white.withOpacity(0.2),
-          //             borderRadius: BorderRadius.circular(10),
-          //           ),
-          //         ),
-          //         Container(
-          //           margin: const EdgeInsets.symmetric(horizontal: 8),
-          //           height: 3,
-          //           width: MediaQuery.of(context).size.width * percent,
-          //           decoration: BoxDecoration(
-          //             color: AppColors.white,
-          //             borderRadius: BorderRadius.circular(10),
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
@@ -296,5 +210,4 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
       return text;
     }
   }
-
 }

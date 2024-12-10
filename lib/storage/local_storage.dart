@@ -6,6 +6,7 @@ class LocalStorage {
     await Hive.initFlutter();
     await Hive.openBox('credentials');
     await Hive.openBox('search_history');
+    await Hive.openBox('locale');
   }
 
   // Save email and password
@@ -52,9 +53,11 @@ class LocalStorage {
     await box.delete('password');
     await box.delete('token');
 
-
     var boxHistory = Hive.box('search_history');
     await boxHistory.delete('queries');
+
+    var boxLocale = Hive.box('locale');
+    await boxLocale.delete('locale');
   }
 
   Future<void> saveSearchQuery(String query) async {
@@ -75,5 +78,17 @@ class LocalStorage {
     await init();
     var box = Hive.box('search_history');
     return List<String>.from(box.get('queries', defaultValue: []) as List);
+  }
+
+  Future<void> setLocale(String locale) async {
+    await init();
+    var box = Hive.box('locale');
+    await box.put('locale', locale);
+  }
+
+  Future<String> getLocale() async {
+    await init();
+    var box = Hive.box('locale');
+    return await box.get('locale') ?? 'ru';
   }
 }

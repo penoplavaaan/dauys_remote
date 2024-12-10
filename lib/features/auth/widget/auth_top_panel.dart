@@ -2,15 +2,19 @@ import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:flutter/material.dart';
 
+import '../../gateway/gateway_screen.dart';
+
 class AuthTopPanel extends StatelessWidget {
   const AuthTopPanel({
     super.key,
     required this.title,
     this.action,
+    this.screenId
   });
 
   final String title;
   final Widget? action;
+  final int? screenId;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,10 @@ class AuthTopPanel extends StatelessWidget {
         children: [
           const SizedBox(width: 10),
           GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
+            onTap: () =>  Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => GateWayScreen(index: screenId?? 0)),
+            ),
             behavior: HitTestBehavior.opaque,
             child: Container(
               height: 32,

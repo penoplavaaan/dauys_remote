@@ -1,6 +1,7 @@
 
 import 'package:dauys_remote/api/api.dart';
 import 'package:dauys_remote/features/gateway/gateway_screen.dart';
+import 'package:dauys_remote/storage/local_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -15,14 +16,18 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  String locale = await LocalStorage().getLocale();
+
   runApp(
     Phoenix(
-      child: const MyApp(),
+      child: MyApp(locale: locale),
     ),
-  );}
+  );
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.locale});
+  final String locale;
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +48,9 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         Locale('ru', ''),
         Locale('en', ''),
-        Locale('kz', ''),
+        Locale('kk', ''),
       ],
-      locale: const Locale('ru'),
+      locale: Locale(locale),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

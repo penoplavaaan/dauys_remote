@@ -1,0 +1,107 @@
+{
+  "hello": "Привет",
+  "welcome": "Добро пожаловать в приложение!",
+  "daily_recommendations": "Күннің ұсыныстары",
+  "lang": "қазақша",
+  "settings": {
+    "security": "ҚАУІПСІЗДІК",
+    "change_password": "Парольді өзгерту",
+    "connection": "БАЙЛАНЫС",
+    "connected_devices": "Байланысқан құрылғылар",
+    "application": "ҚОСЫМША",
+    "change_language": "Тілді өзгерту",
+    "terms_of_use": "Пайдалану шарттары",
+    "privacy_policy": "Жекелік саясат"
+  },
+  "profile": {
+    "premium_user": "Премиум пайдаланушы",
+    "my_data": "Менің деректерім",
+    "favorites": "Таңдаулылар",
+    "history": "Тарих",
+    "my_playlists": "Менің плейлисттерім",
+    "settings": "Параметрлер",
+    "logout": "Шығу"
+  },
+  "my_data": {
+    "my_data": "Менің деректерім",
+    "your_name": "Сіздің атыңыз",
+    "email_address": "Электрондық пошта",
+    "phone_number": "Телефон нөмірі",
+    "save": "Сақтау",
+    "data_saved_successfully": "Деректер сәтті сақталды!",
+    "error_saving_data": "Деректерді сақтау кезінде қате!",
+    "field_cannot_be_empty": "Поле {0} бос болмауы керек"
+  },
+  "my_playlists": {
+    "my_playlists": "Менің плейлистарым",
+    "your_playlists": "Сіздің плейлистарыңыз",
+    "favorite": "Таңдаулы",
+    "history": "Тарих",
+    "evaluated": "Сіздің бағаларыңыз",
+    "your_albums": "Сіздің альбомдарыңыз",
+    "recommended": "Ұсынылған"
+  },
+  "settings_password": {
+    "change_password": "Парольды өзгерту",
+    "google_only": "Егер сіз тек Google арқылы кірсеңіз, бос қалдырыңыз:",
+    "enter_old_password": "Ескі пароліңізді енгізіңіз",
+    "new_password": "Жаңа пароль",
+    "repeat_password": "Парольді қайталаңыз",
+    "save": "Сақтау"
+  },
+  "history": {
+    "title": "Тарих",
+    "loading": "... ән",
+    "last_month": "соңғы айда",
+    "empty_message": "Таңдаулыларда ештеңе жоқ. \nӘндерді қосып көріңіз, олар осы экранда пайда болады!"
+  },
+  "favorites": {
+    "title": "Таңдаулы",
+    "loading": "... ән",
+    "empty_message": "Таңдаулыларда ештеңе жоқ. \nӘндерді қосып көріңіз, олар осы экранда пайда болады!"
+  },
+  "song_preview": {
+    "select_mode": "Режимді таңдау",
+    "one_microphone": "1 микрофон",
+    "classic_mode": "Классикалық режим",
+    "two_microphones": "2 микрофон",
+    "competition_mode": "Достармен бәсекелестік режимі!",
+    "start": "Бастау",
+    "connect_device": "Құрылғыны қосу",
+    "searching_devices": "Құрылғыларды іздеу",
+    "searching_dauys_box": "Dauys Karaoke Box іздеу",
+    "error": "Қате",
+    "text": "Мәтін"
+  },
+  "bottom_navigation": {
+    "home": "Басты бет",
+    "search": "Іздеу",
+    "profile": "Профиль"
+  },
+  "search": {
+    "hint": "Қандай ән іздеп жатырсыз?",
+    "no_results": "Көрінетіндей, ештеңе табылмады. \nТағы бір рет байқап көрейік пе?",
+    "history_recent": "Сіз жақында іздедіңіз",
+    "history_empty": "Мұнда сіздің іздеу тарихыңыз болады",
+    "ready": "Дайын"
+  },
+  "evaluated": {
+    "title": "Бағаланған әндер",
+    "loading": "ән",
+    "count": "4-тен жоғары бағамен",
+    "empty_message": "Қазір таңдаулы әндер жоқ. \nӘндерді қосып көріңіз, олар осы экранда пайда болады!"
+  },
+  "new_playlist": {
+    "title": "Жаңа плейлист",
+    "hint": "Плейлистің атауы",
+    "empty_name": "Атауды енгізіңіз",
+    "next": "Келесі"
+  },
+  "playlist": {
+    "delete_song_title": "Әнді жою",
+    "yes": "Иә",
+    "no": "Жоқ",
+    "song_removed": "Ән плейлистен жойылды",
+    "really_delete": "Әнді ойнату тізімінен шынымен өшіргіңіз келе ме?"
+  }
+}

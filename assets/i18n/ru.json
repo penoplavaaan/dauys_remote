@@ -2,5 +2,106 @@
   "hello": "Привет",
   "welcome": "Добро пожаловать в приложение!",
   "daily_recommendations": "Рекомендации дня",
-  "lang": "Русский"
+  "lang": "Русский",
+  "settings": {
+    "security": "БЕЗОПАСНОСТЬ",
+    "change_password": "Сменить пароль",
+    "connection": "ПОДКЛЮЧЕНИЕ",
+    "connected_devices": "Подключенные устройства",
+    "application": "ПРИЛОЖЕНИЕ",
+    "change_language": "Сменить язык",
+    "terms_of_use": "Условия пользования",
+    "privacy_policy": "Политика конфиденциальности"
+  },
+  "profile": {
+    "premium_user": "Премиум пользователь",
+    "my_data": "Мои данные",
+    "favorites": "Избранное",
+    "history": "История",
+    "my_playlists": "Мои плейлисты",
+    "settings": "Настройки",
+    "logout": "Выйти"
+  },
+  "my_data": {
+    "my_data": "Мои данные",
+    "your_name": "Ваше имя",
+    "email_address": "Эл. адрес",
+    "phone_number": "Номер телефона",
+    "save": "Сохранить",
+    "data_saved_successfully": "Данные успешно сохранены!",
+    "error_saving_data": "Ошибка при сохранении данных!",
+    "field_cannot_be_empty": "Поле не может быть пустым"
+  },
+  "my_playlists": {
+    "my_playlists": "Мои плейлисты",
+    "your_playlists": "Ваши плейлисты",
+    "favorite": "Избранное",
+    "history": "История",
+    "evaluated": "Ваши оценки",
+    "your_albums": "Ваши альбомы",
+    "recommended": "Рекомендуем"
+  },
+  "settings_password": {
+    "change_password": "Сменить пароль",
+    "google_only": "Если вы входили ТОЛЬКО через Google, оставьте пустым:",
+    "enter_old_password": "Введите старый пароль",
+    "new_password": "Новый пароль",
+    "repeat_password": "Повторите пароль",
+    "save": "Сохранить"
+  },
+  "history": {
+    "title": "История",
+    "loading": "... песен",
+    "last_month": "за последний месяц",
+    "empty_message": "Пока в избранном ничего нет. \nПопробуйте добавить песни, и они появятся на этом экране!"
+  },
+  "favorites": {
+    "title": "Избранное",
+    "loading": "... песен",
+    "empty_message": "Пока в избранном ничего нет. \nПопробуйте добавить песни, и они появятся на этом экране!"
+  },
+  "song_preview": {
+    "select_mode": "Выбрать режим",
+    "one_microphone": "1 микрофон",
+    "classic_mode": "Классический режим",
+    "two_microphones": "2 микрофона",
+    "competition_mode": "Режим соревнования с друзьями!",
+    "start": "Начать",
+    "connect_device": "Подключить приставку",
+    "searching_devices": "Поиск устройств",
+    "searching_dauys_box": "Поиск Dauys Karaoke Box",
+    "error": "Ошибка",
+    "text": "Текст"
+  },
+  "bottom_navigation": {
+    "home": "Главная",
+    "search": "Поиск",
+    "profile": "Профиль"
+  },
+  "search": {
+    "hint": "Какую песню ищете?",
+    "no_results": "Кажется, ничего не нашлось. \nПопробуем еще раз?",
+    "history_recent": "Вы недавно искали",
+    "history_empty": "Тут будет ваша история поиска",
+    "ready": "Готово"
+  },
+  "evaluated": {
+    "title": "Оцененные песни",
+    "loading": "песен",
+    "count": "с оценкой более 4",
+    "empty_message": "Пока в избранном ничего нет. \nПопробуйте добавить песни, и они появятся на этом экране!"
+  },
+  "new_playlist": {
+    "title": "Новый плейлист",
+    "hint": "Название плейлиста",
+    "empty_name": "Введите название",
+    "next": "Далее"
+  },
+  "playlist": {
+    "delete_song_title": "Удаление песни",
+    "yes": "Да",
+    "no": "Нет",
+    "song_removed": "Песня удалена из плейлиста",
+    "really_delete": "Вы точно хотите удалить песню из плейлиста?"
+  }
 }

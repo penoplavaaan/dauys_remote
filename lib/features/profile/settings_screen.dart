@@ -22,16 +22,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool value = true;
 
   Widget _title(String title) => Text(
-        title,
-        style: AppStyles.magistral14w400.copyWith(color: AppColors.white.withOpacity(.4)),
-      );
+    title,
+    style: AppStyles.magistral14w400.copyWith(color: AppColors.white.withOpacity(.4)),
+  );
 
   Widget _text(String text) => Expanded(
-        child: Text(
-          text,
-          style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
-        ),
-      );
+    child: Text(
+      text,
+      style: AppStyles.magistral16w500.copyWith(color: AppColors.white),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +41,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Column(
         children: [
           const TopSpacer(),
-          const AuthTopPanel(title: 'Настройки'),
+          AuthTopPanel(title: 'Настройки', screenId: 2,),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
               children: [
-                _title('БЕЗОПАСНОСТЬ'),
+                _title(FlutterI18n.translate(context, "settings.security")),
                 const SizedBox(height: 7),
                 GestureDetector(
                   onTap: () {
@@ -65,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     child: Row(
                       children: [
-                        _text('Сменить пароль'),
+                        _text(FlutterI18n.translate(context, "settings.change_password")),
                         const SizedBox(width: 16),
                         const Icon(
                           Icons.chevron_right,
@@ -77,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                _title('ПОДКЛЮЧЕНИЕ'),
+                _title(FlutterI18n.translate(context, "settings.connection")),
                 const SizedBox(height: 7),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
@@ -98,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             height: 60,
                             child: Row(
                               children: [
-                                _text('Подключенные устройства'),
+                                _text(FlutterI18n.translate(context, "settings.connected_devices")),
                                 const SizedBox(width: 16),
                                 const Icon(
                                   Icons.chevron_right,
@@ -115,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                _title('ПРИЛОЖЕНИЕ'),
+                _title(FlutterI18n.translate(context, "settings.application")),
                 const SizedBox(height: 7),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20),
@@ -139,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             child: Row(
                               children: [
-                                _text('Сменить язык'),
+                                _text(FlutterI18n.translate(context, "settings.change_language")),
                                 const SizedBox(width: 16),
                                 Text(
                                   FlutterI18n.translate(context, "lang"),
@@ -166,7 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             child: Row(
                               children: [
-                                _text('Условия пользования'),
+                                _text(FlutterI18n.translate(context, "settings.terms_of_use")),
                                 const SizedBox(width: 16),
                                 const Icon(
                                   Icons.chevron_right,
@@ -185,7 +185,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             height: 60,
                             child: Row(
                               children: [
-                                _text('Политика конфиденциальности'),
+                                _text(FlutterI18n.translate(context, "settings.privacy_policy")),
                                 const SizedBox(width: 16),
                                 const Icon(
                                   Icons.chevron_right,

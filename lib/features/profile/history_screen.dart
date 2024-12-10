@@ -2,10 +2,9 @@ import 'package:dauys_remote/core/helpers/song_extension.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
-import 'package:dauys_remote/features/main/playlist_screen.dart';
-import 'package:dauys_remote/features/main/widget/playlist_item.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../api/api.dart';
 import '../../core/helpers/ImageAWS.dart';
@@ -28,8 +27,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   void initState() {
-    Api.create().then((Api a){
-      a.getHistory().then((res){
+    Api.create().then((Api a) {
+      a.getHistory().then((res) {
         setState(() {
           songs = SearchResults.fromJson(res);
           isSearching = false;
@@ -72,7 +71,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     width: 32,
                     alignment: Alignment.center,
                     child: const Icon(
-                      Icons.chevron_left, // TODO KANTUR: change to asset icon
+                      Icons.chevron_left,
                       size: 20,
                       color: AppColors.white,
                     ),
@@ -82,7 +81,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
-                    'История',
+                    FlutterI18n.translate(context, "history.title"), // заменено
                     style: AppStyles.magistral30w700.copyWith(color: AppColors.white),
                   ),
                 ),
@@ -90,7 +89,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
-                    isSearching? '... песен' : '${songs.searchCount.toSongString()} за последний месяц',
+                    isSearching
+                        ? FlutterI18n.translate(context, "history.loading") // заменено
+                        : '${songs.searchCount.toSongString(context)} ${FlutterI18n.translate(context, "history.last_month")}', // заменено
                     style: AppStyles.magistral16w400.copyWith(color: AppColors.white.withOpacity(0.6)),
                   ),
                 ),
@@ -98,9 +99,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
             ),
           ),
           const SizedBox(height: 2),
-          if(songs.searchCount == 0) ...[
-            isSearching ?
-            const SizedBox(
+          if (songs.searchCount == 0) ...[
+            isSearching
+                ? const SizedBox(
               height: 50,
               width: 50,
               child: CircularProgressIndicator(),
@@ -108,9 +109,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 : Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Пока в избранном ничего нет. \nПопробуйте добавить песни, и они появятся на этом экране!',
-                style: AppStyles.magistral16w400.copyWith(
-                    color: AppColors.white.withOpacity(0.6)),
+                FlutterI18n.translate(context, "history.empty_message"), // заменено
+                style: AppStyles.magistral16w400.copyWith(color: AppColors.white.withOpacity(0.6)),
               ),
             ),
           ] else ...[
@@ -137,7 +137,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   },
                 ),
                 separatorBuilder: (_, __) => const SizedBox(height: 12),
-
               ),
             ),
           ],
@@ -146,4 +145,3 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 }
-

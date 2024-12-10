@@ -2,6 +2,7 @@ import 'package:dauys_remote/core/constants/app_icons.dart';
 import 'package:dauys_remote/core/theme/app_colors.dart';
 import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../storage/local_storage.dart';
 
@@ -19,7 +20,7 @@ class _SearchHistoryState extends State<SearchHistory> {
 
   @override
   void initState() {
-    localStorage.getSearchHistory().then((history){
+    localStorage.getSearchHistory().then((history) {
       setState(() {
         _history = history;
       });
@@ -27,8 +28,6 @@ class _SearchHistoryState extends State<SearchHistory> {
     print('SearchHistory rebuilt');
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +39,8 @@ class _SearchHistoryState extends State<SearchHistory> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
             _history.isNotEmpty
-              ? 'Вы недавно искали'
-              : 'Тут будет ваша история поиска',
+                ? FlutterI18n.translate(context, "search.history_recent") // заменено
+                : FlutterI18n.translate(context, "search.history_empty"), // заменено
             style: AppStyles.magistral20w500.copyWith(color: AppColors.white.withOpacity(0.5)),
           ),
         ),
@@ -62,22 +61,22 @@ class _SearchHistoryState extends State<SearchHistory> {
               ),
               const SizedBox(width: 20),
               Expanded(
-                child:
-                GestureDetector(
-                  onTap: (){
+                child: GestureDetector(
+                  onTap: () {
                     widget.callback(_history[index]);
                   },
                   child: Container(
                     height: 46,
                     alignment: Alignment.centerLeft,
-                    decoration:
-                    BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.white.withOpacity(0.2)))),
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(color: AppColors.white.withOpacity(0.2))),
+                    ),
                     child: Text(
                       _history[index],
                       style: AppStyles.magistral18w400.copyWith(color: AppColors.white),
                     ),
                   ),
-                )
+                ),
               ),
             ],
           ),
