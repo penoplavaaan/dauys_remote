@@ -12,23 +12,23 @@ import '../../core/helpers/ImageAWS.dart';
 import '../../models/search_results.dart';
 import '../main/widget/playlist_item_new.dart';
 
-class HistoryScreen extends StatefulWidget {
-  const HistoryScreen({
+class EvaluatedScreen extends StatefulWidget {
+  const EvaluatedScreen({
     super.key,
   });
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  State<EvaluatedScreen> createState() => _EvaluatedScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class _EvaluatedScreenState extends State<EvaluatedScreen> {
   SearchResults songs = SearchResults.fromJson({'searchCount': 0, 'songs': []});
   bool isSearching = true;
 
   @override
   void initState() {
     Api.create().then((Api a){
-      a.getHistory().then((res){
+      a.getEvaluated().then((res){
         setState(() {
           songs = SearchResults.fromJson(res);
           isSearching = false;
@@ -81,7 +81,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
-                    'История',
+                    'Оцененные песни',
                     style: AppStyles.magistral30w700.copyWith(color: AppColors.white),
                   ),
                 ),
@@ -89,7 +89,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: Text(
-                    isSearching? '... песен' : '${songs.searchCount.toSongString()} за последний месяц',
+                    isSearching? '... песен' : '${songs.searchCount.toSongString()} с оценкой более 4',
                     style: AppStyles.magistral16w400.copyWith(color: AppColors.white.withOpacity(0.6)),
                   ),
                 ),

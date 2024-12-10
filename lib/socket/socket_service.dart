@@ -40,6 +40,7 @@ class SocketService {
             await Future.delayed(const Duration(milliseconds: 200));
             print('connecting...');
           },
+
           onStompError: (dynamic error) {
             print('WebSocket error: $error');
           },
@@ -53,6 +54,8 @@ class SocketService {
   }
 
   void deactivate(){
+    onStop();
+    sendGoodbye();
     client.deactivate();
   }
 
@@ -104,7 +107,8 @@ class SocketService {
         'command': commandTypeHandshake
       },
       'data': {
-        'micCount': micCount
+        'micCount': micCount,
+        'deviceId': deviceId
       }
     });
   }
@@ -116,7 +120,8 @@ class SocketService {
         'type': messageTypeGoodbye,
         'command': commandTypeGoodbye
       },
-      'data': null
+      'data': null,
+      'deviceId': deviceId
     });
   }
 
@@ -127,7 +132,8 @@ class SocketService {
         'command': commandTypeBeforePlay
       },
       'data': {
-        'songId' : song.id
+        'songId' : song.id,
+        'deviceId': deviceId
       }
     });
   }
@@ -139,7 +145,8 @@ class SocketService {
         'command': commandTypePlay
       },
       'data': {
-        'songId' : song.id
+        'songId' : song.id,
+        'deviceId': deviceId
       }
     });
   }
@@ -151,7 +158,8 @@ class SocketService {
         'command': commandTypeResume
       },
       'data': {
-        'songId' : song.id
+        'songId' : song.id,
+        'deviceId': deviceId
       }
     });
   }
@@ -163,7 +171,8 @@ class SocketService {
         'command': commandTypePause
       },
       'data': {
-        'songId' : song.id
+        'songId' : song.id,
+        'deviceId': deviceId
       }
     });
   }
@@ -175,7 +184,8 @@ class SocketService {
         'command': commandTypeStop
       },
       'data': {
-        'songId' : song.id
+        'songId' : song.id,
+        'deviceId': deviceId
       }
     });
   }
@@ -189,7 +199,7 @@ class SocketService {
         'command': commandTypeHandshake
       },
       'data': {
-        'deviceId' : 1455432
+        'deviceId' : deviceId
       }
     });
   }

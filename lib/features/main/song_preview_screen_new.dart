@@ -91,9 +91,13 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
                 controller: controller,
                 onPageChanged: (page) {
                   if(page == 0){
-                    _micCount = 1;
+                    setState(() {
+                      _micCount = 1;
+                    });
                   }else{
-                    _micCount= 2;
+                    setState(() {
+                      _micCount = 2;
+                    });
                   }
                   print('page');
                   print(page);

@@ -19,6 +19,8 @@ import '../../core/constants/app_image.dart';
 import '../../models/user_model.dart';
 import '../../storage/local_storage.dart';
 import 'favorites_screen.dart';
+import 'history_screen.dart';
+import 'my_playlists_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -232,16 +234,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileTile(
                           title: 'История',
                           icon: AppIcons.history,
-                          page: null
-                          // page: HistoryScreen(),
-
+                          page: HistoryScreen(),
                         ),
                         SizedBox(width: 10),
                         ProfileTile(
                           title: 'Мои плейлисты',
                           icon: AppIcons.record,
-                          page: null
-                          // page: MyPlaylistsScreen(),
+                          page: MyPlaylistsScreen(),
                         ),
                         SizedBox(width: 16),
                       ],

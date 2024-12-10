@@ -264,6 +264,24 @@ class Api {
     return await _makeGet('/api/v1/userdata/favoritesList', queryParams: queryParams);
   }
 
+  Future<dynamic> getEvaluated() async {
+    final queryParams = {
+      'page': '0',
+      'size': '500',
+    };
+
+    return await _makeGet('/api/v1/userdata/favoritesByStar', queryParams: queryParams);
+  }
+
+  Future<dynamic> getHistory() async {
+    final queryParams = {
+      'page': '0',
+      'size': '500',
+    };
+
+    return await _makeGet('/api/v1/userdata/history', queryParams: queryParams);
+  }
+
   Future<bool> authGoogle(String token) async {
     final data = {
       'code': token,
