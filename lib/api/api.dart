@@ -314,6 +314,30 @@ class Api {
     return true;
   }
 
+  Future<bool> authFacebook(String token) async {
+    final data = {
+      'accessToken': token,
+    };
+
+    try{
+      _bearerToken =  (await _makePostNoAuth('/oauth2/mobile/facebook', data))['access_token'] ?? '';
+      print('fb token $_bearerToken');
+      if (_bearerToken == ''){
+        print('_bearerToken == ''');
+
+        return false;
+      }
+
+      await localStorage.saveTokenExplicitly(_bearerToken);
+      return true;
+    }catch (e){
+      print(e);
+      return false;
+    }
+
+    return true;
+  }
+
   Future<bool> toggleFavourites(int songId, bool inFavNow) async{
     try{
       if(inFavNow){

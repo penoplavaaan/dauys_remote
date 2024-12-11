@@ -24,7 +24,7 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
   LocalStorage storage = LocalStorage();
   List<String> languages = [
     'Русский',
-    'қазақша',
+    'Қазақша',
     'English',
   ];
 

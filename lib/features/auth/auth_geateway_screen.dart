@@ -50,33 +50,29 @@ class _AuthGeatewayScreenState extends State<AuthGeatewayScreen> {
       const SnackBar(content: Text('Пароль успешно сохранен!')),
     );
     return;
-    // Obtain the auth details from the request
-    // final GoogleSignInAuthentication? googleAuth = await googleUser.authentication;
-    //
-    // print('googleAuth');
-    // print(googleAuth?.accessToken);
-    // print(googleAuth?.idToken);
-    // // Create a new credential
-    // final credential = GoogleAuthProvider.credential(
-    //   accessToken: googleAuth?.accessToken,
-    //   idToken: googleAuth?.idToken,
-    // );
-    //
-    // // Once signed in, return the UserCredential
-    // return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   Future<UserCredential?> signInWithFacebook() async {
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
     if(loginResult.status == LoginStatus.success){
-      // Create a credential from the access token
-      final OAuthCredential credential = FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      print('fb token');
+      print(loginResult.accessToken!.tokenString);
     }
-    print('loginResult');
-    print(loginResult.status);
+
+    final api = await Api.createFirstTime();
+    final accessTokenFetched = await api.authFacebook(loginResult.accessToken?.tokenString ?? '');
+    print('accessTokenFetched');
+    print(accessTokenFetched == false? 'false': 'true');
+    if(accessTokenFetched == true){
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const GateWayScreen()),
+      );
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Ошибка авторизации')),
+    );
     return null;
   }
 
