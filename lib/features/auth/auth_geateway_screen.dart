@@ -41,14 +41,12 @@ class _AuthGeatewayScreenState extends State<AuthGeatewayScreen> {
     final api = await Api.createFirstTime();
     final accessTokenFetched = await api.authGoogle(googleUser.serverAuthCode ?? '');
     if(accessTokenFetched){
+      await api.makeSubscription();
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const GateWayScreen()),
       );
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Пароль успешно сохранен!')),
-    );
     return;
   }
 
@@ -65,6 +63,8 @@ class _AuthGeatewayScreenState extends State<AuthGeatewayScreen> {
     print('accessTokenFetched');
     print(accessTokenFetched == false? 'false': 'true');
     if(accessTokenFetched == true){
+      await api.makeSubscription();
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const GateWayScreen()),

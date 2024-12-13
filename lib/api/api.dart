@@ -388,6 +388,20 @@ class Api {
     return true;
   }
 
+  Future<bool> makeSubscription() async{
+    try{
+      final Map<String, String> query = {
+        "subScriptionType": "PREMIUM"
+      };
+
+      await _makePostWithQuery('/api/v1/subscription/makeSubscription', queryParams: query);
+    } catch (e) {
+      return false;
+    }
+
+    return true;
+  }
+
   Future<bool> removeSongFromPlaylist(int songId, int playlistId) async{
     try{
       await _makeDelete('/api/v1/userdata/$songId/$playlistId');

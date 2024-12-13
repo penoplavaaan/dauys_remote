@@ -47,38 +47,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     final api = await Api.createFirstTime();
 
     try {
-        // final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        //   email: emailPhoneController.text,
-        //   password: passwordController.text,
-        // );
         await api.login(emailPhoneController.text,  passwordController.text);
+        await api.makeSubscription();
 
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const GateWayScreen()),
         );
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
-        } else if (e.code == 'email-already-in-use') {
-          try {
-            // final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-            //   email: emailPhoneController.text,
-            //   password: passwordController.text,
-            // );
-
-            await api.login(emailPhoneController.text,  passwordController.text);
-            print('we are logged in');
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const GateWayScreen()),
-            );
-          } on FirebaseAuthException catch (e) {
-            if (e.code == 'user-not-found') {
-            } else if (e.code == 'wrong-password') {
-            }
-          }
-        }
       } catch (e) {
         print(e);
       }

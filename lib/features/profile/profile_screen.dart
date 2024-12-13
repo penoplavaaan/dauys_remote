@@ -120,11 +120,156 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   future: userFuture, // Use the future from initState
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Column(
+                            children: [
+                              const SizedBox(height: 60),
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.black.withOpacity(0.45),
+                                      blurRadius: 50,
+                                      offset: const Offset(30, 0),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Blur(
+                                    blur: 10,
+                                    colorOpacity: 0,
+                                    child: Container(
+                                      height: 156,
+                                      width: 358,
+                                      decoration: BoxDecoration(
+                                        gradient: AppGradients.buttonGrayGradient15,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const AppAvatar(
+                                asset: AppImage.icon,
+                                size: 120,
+                              ),
+                              const SizedBox(height: 20),
+                              const Center(child: CircularProgressIndicator()),
+                              // Text(
+                              //   '', // Use username from User model
+                              //   style: AppStyles.magistral22w500.copyWith(color: AppColors.white),
+                              // ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GradientOverlay(
+                                    child: Image.asset(
+                                      AppIcons.crown,
+                                      height: 20,
+                                      width: 20,
+                                      fit: BoxFit.cover,
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  GradientOverlay(
+                                    child: Text(
+                                      FlutterI18n.translate(context, "profile.premium_user"),
+                                      style: AppStyles.magistral14w400.copyWith(color: AppColors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     } else if (!snapshot.hasData) {
-                      return const Center(child: Text('No user data found'));
+                      return Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Column(
+                            children: [
+                              const SizedBox(height: 60),
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.black.withOpacity(0.45),
+                                      blurRadius: 50,
+                                      offset: const Offset(30, 0),
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Blur(
+                                    blur: 10,
+                                    colorOpacity: 0,
+                                    child: Container(
+                                      height: 156,
+                                      width: 358,
+                                      decoration: BoxDecoration(
+                                        gradient: AppGradients.buttonGrayGradient15,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const AppAvatar(
+                                asset: AppImage.icon,
+                                size: 120,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                '', // Use username from User model
+                                style: AppStyles.magistral22w500.copyWith(color: AppColors.white),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  GradientOverlay(
+                                    child: Image.asset(
+                                      AppIcons.crown,
+                                      height: 20,
+                                      width: 20,
+                                      fit: BoxFit.cover,
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  GradientOverlay(
+                                    child: Text(
+                                      FlutterI18n.translate(context, "profile.premium_user"),
+                                      style: AppStyles.magistral14w400.copyWith(color: AppColors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
                     }
 
                     final user = snapshot.data!; // Get user data
