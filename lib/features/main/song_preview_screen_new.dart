@@ -92,6 +92,28 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
     });
   }
 
+  void play() {
+    setState(() {
+      _isPlaying = true;
+    });
+  }
+
+  void pause() {
+    setState(() {
+      _isPlaying = false;
+    });
+  }
+
+  void stop() {
+    setState(() {
+      _isPlaying = false;
+      showChooseMicsRegion = true;
+      showPlayer = false;
+      showConnectToBox = false;
+    });
+    client.deactivate();
+  }
+
   @override
   Widget build(BuildContext context) {
     setState(() {
@@ -262,7 +284,14 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
 
           bool isConnected = false;
 
-          client = SocketService(_user, _songFinal, _micCount);
+          client = SocketService(
+              _user,
+              _songFinal,
+              _micCount,
+              play,
+              pause,
+              stop,
+          );
           await client.configure();
 
           for (int i = 0; i <= 5; i++) {

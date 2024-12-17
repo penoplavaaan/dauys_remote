@@ -36,7 +36,10 @@ class _SingScreenNewState extends State<SingScreenNew> {
     client = SocketService(
       widget.user,
       widget.song,
-      2
+      2,
+      () => print('123'),
+          () => print('123'),
+          () => print('123'),
     );
   }
 
