@@ -74,13 +74,13 @@ class SettingsChangeLanguageScreenState extends State<SettingsChangeLanguageScre
                   });
 
                   if(index == 0){
-                    await _changeLanguage(Locale('ru'));
+                    await _changeLanguage(const Locale('ru'));
                   }
                   if(index == 1){
-                    await _changeLanguage(Locale('kk'));
+                    await _changeLanguage(const Locale('kk'));
                   }
                   if(index == 2){
-                    await _changeLanguage(Locale('en'));
+                    await _changeLanguage(const Locale('en'));
                   }
 
                   Navigator.pushReplacement(

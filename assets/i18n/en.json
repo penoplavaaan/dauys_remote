@@ -11,7 +11,11 @@
     "application": "APPLICATION",
     "change_language": "Change Language",
     "terms_of_use": "Terms of Use",
-    "privacy_policy": "Privacy Policy"
+    "privacy_policy": "Privacy Policy",
+    "devices": {
+      "no_devices": "No connected devices",
+      "last_connection": "Last connection: "
+    }
   },
   "profile": {
     "premium_user": "Premium User",
@@ -71,7 +75,8 @@
     "searching_devices": "Searching for Devices",
     "searching_dauys_box": "Searching for Dauys Karaoke Box",
     "error": "Error: {0}",
-    "text": "Lyrics"
+    "text": "Lyrics",
+    "connection_failed": "Failed to connect to device"
   },
   "bottom_navigation": {
     "home": "Home",

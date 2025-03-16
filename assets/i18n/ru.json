@@ -11,7 +11,11 @@
     "application": "ПРИЛОЖЕНИЕ",
     "change_language": "Сменить язык",
     "terms_of_use": "Условия пользования",
-    "privacy_policy": "Политика конфиденциальности"
+    "privacy_policy": "Политика конфиденциальности",
+    "devices": {
+      "no_devices": "Нет подключенных устройств",
+      "last_connection": "Последнее подключение: "
+    }
   },
   "profile": {
     "premium_user": "Премиум пользователь",
@@ -61,17 +65,18 @@
     "empty_message": "Пока в избранном ничего нет. \nПопробуйте добавить песни, и они появятся на этом экране!"
   },
   "song_preview": {
-    "select_mode": "Выбрать режим",
-    "one_microphone": "1 микрофон",
+    "select_mode": "Выберите режим",
+    "one_microphone": "1 Микрофон",
     "classic_mode": "Классический режим",
-    "two_microphones": "2 микрофона",
-    "competition_mode": "Режим соревнования с друзьями!",
+    "two_microphones": "2 Микрофона",
+    "competition_mode": "Соревновательный режим с друзьями!",
     "start": "Начать",
-    "connect_device": "Подключить приставку",
+    "connect_device": "Подключить устройство",
     "searching_devices": "Поиск устройств",
     "searching_dauys_box": "Поиск Dauys Karaoke Box",
-    "error": "Ошибка",
-    "text": "Текст"
+    "error": "Ошибка: {0}",
+    "text": "Текст",
+    "connection_failed": "Не удалось подключиться к устройству"
   },
   "bottom_navigation": {
     "home": "Главная",

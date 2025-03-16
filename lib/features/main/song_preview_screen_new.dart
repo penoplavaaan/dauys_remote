@@ -9,6 +9,8 @@ import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
+import 'package:dauys_remote/models/device_model.dart';
+import 'package:dauys_remote/services/device_storage_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,6 +57,8 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
 
   bool _isPlaying = false;
   int _progressInSec = 0;
+
+  final DeviceStorageService _deviceStorage = DeviceStorageService();
 
   @override
   void dispose() {
@@ -234,56 +238,59 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
       );
 
       _connectToBox = AppButton(
-        title: FlutterI18n.translate(context, "song_preview.connect_device"), // заменено
+        title: FlutterI18n.translate(context, "song_preview.connect_device"),
         onTap: () async {
-          bottomSheetBuilder(
-            children: [
-              Text(
-                FlutterI18n.translate(context, "song_preview.searching_devices"), // заменено
-                style: AppStyles.magistral20w500.copyWith(color: AppColors.white),
-              ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () => Navigator.of(context).pop(1),
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Center(
                 child: Container(
-                  padding: const EdgeInsets.all(15),
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  padding: const EdgeInsets.all(32),
                   decoration: BoxDecoration(
-                    color: AppColors.backgroundButtonGradient1.withOpacity(0.05),
-                    shape: BoxShape.circle,
+                    gradient: AppGradients.darkGradientVertical,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.black.withOpacity(0.3),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                      ),
+                    ],
                   ),
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: AppColors.backgroundButtonGradient1.withOpacity(0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: AppColors.backgroundButtonGradient1.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: AppColors.backgroundButtonGradient1.withOpacity(0.3),
-                          shape: BoxShape.circle,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const PulsingLoader(),
+                      const SizedBox(height: 24),
+                      Text(
+                        FlutterI18n.translate(context, "song_preview.searching_devices"),
+                        style: AppStyles.magistral20w500.copyWith(
+                          color: AppColors.white,
+                          letterSpacing: 0.5,
+                          decoration: TextDecoration.none,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
+                      const SizedBox(height: 12),
+                      Text(
+                        FlutterI18n.translate(context, "song_preview.searching_dauys_box"),
+                        style: AppStyles.magistral14w400.copyWith(
+                          color: AppColors.white.withOpacity(0.6),
+                          letterSpacing: 0.3,
+                          decoration: TextDecoration.none,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                FlutterI18n.translate(context, "song_preview.searching_dauys_box"), // заменено
-                style: AppStyles.magistral14w400.copyWith(color: AppColors.white.withOpacity(0.4)),
-              ),
-            ],
+              );
+            },
           );
 
           bool isConnected = false;
-
           client = SocketService(
               _user,
               _songFinal,
@@ -294,22 +301,49 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
           );
           await client.configure();
 
-          for (int i = 0; i <= 5; i++) {
-            sleep(const Duration(seconds: 3));
+          // Try connecting for up to 30 seconds (15 attempts with 2 second intervals)
+          for (int i = 0; i < 15; i++) {
+            await Future.delayed(const Duration(seconds: 2));
             if (client.isConnected()) {
               isConnected = true;
               break;
             }
           }
 
+          // Close the loading dialog
+          if (context.mounted) {
+            Navigator.pop(context);
+          }
+
           if (isConnected) {
+            // Сохраняем устройство
+            await _deviceStorage.saveDevice(Device(
+              id: client.deviceId.toString(),
+              connectedAt: DateTime.now(),
+            ));
+
             setState(() {
               showChooseMicsRegion = false;
               showPlayer = true;
               showConnectToBox = false;
             });
-            await Future.delayed(const Duration(seconds: 4));
-            Navigator.pop(context);
+          } else {
+            setState(() {
+              showChooseMicsRegion = true;
+              showPlayer = false;
+              showConnectToBox = false;
+            });
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    FlutterI18n.translate(context, "song_preview.connection_failed"),
+                    style: AppStyles.magistral14w400.copyWith(color: AppColors.white),
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           }
         },
       );
@@ -604,7 +638,7 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
       totalSeconds = double.parse(secondsString);
     } catch (e) {
       print(secondsString);
-      throw e;
+      rethrow;
     }
 
     int minutes = totalSeconds ~/ 60;
@@ -642,4 +676,100 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
       ),
     ),
   );
+}
+
+class PulsingLoader extends StatefulWidget {
+  const PulsingLoader({super.key});
+
+  @override
+  State<PulsingLoader> createState() => _PulsingLoaderState();
+}
+
+class _PulsingLoaderState extends State<PulsingLoader> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: false);
+
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Внешний пульсирующий круг
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color.fromRGBO(255, 255, 255, 0.2).withOpacity((1 - _animation.value) * 0.2),
+                  width: 2,
+                ),
+              ),
+            );
+          },
+        ),
+        // Средний пульсирующий круг
+        AnimatedBuilder(
+          animation: _animation,
+          builder: (context, child) {
+            return Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color.fromRGBO(255, 255, 255, 0.4).withOpacity((1 - _animation.value) * 0.4),
+                  width: 2,
+                ),
+              ),
+            );
+          },
+        ),
+        // Внутренний круг с иконкой
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: AppGradients.buttonRainbow,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withOpacity(0.2),
+                blurRadius: 15,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.wifi_tethering,
+            color: Colors.white,
+            size: 30,
+          ),
+        ),
+      ],
+    );
+  }
 }

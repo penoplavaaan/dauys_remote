@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:dauys_remote/api/api.dart';
 import 'package:dauys_remote/core/constants/app_icons.dart';
@@ -9,8 +8,6 @@ import 'package:dauys_remote/core/theme/app_styles.dart';
 import 'package:dauys_remote/core/widget/add_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
-import 'package:dauys_remote/features/main/main_screen.dart';
-import 'package:dauys_remote/features/main/playlist_screen.dart';
 import 'package:dauys_remote/features/main/widget/top_spacer.dart';
 import 'package:dauys_remote/features/profile/favorites_screen.dart';
 import 'package:dauys_remote/features/profile/history_screen.dart';

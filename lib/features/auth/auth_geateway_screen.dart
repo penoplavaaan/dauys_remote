@@ -20,26 +20,52 @@ class AuthGeatewayScreen extends StatefulWidget {
 }
 
 class _AuthGeatewayScreenState extends State<AuthGeatewayScreen> {
+  static const List<String> scopes = <String>[
+    'openid',
+    'email',
+    'profile',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ];
+
   Future<void> signInWithGoogle() async {
     // Trigger the authentication flow
     GoogleSignInAccount? googleUser;
     try {
       googleUser = await GoogleSignIn(
-        clientId: '966936741628-p6t5ri6um37lhg3fkkt9o7hc5g3vr85l.apps.googleusercontent.com'
+        clientId: '966936741628-p6t5ri6um37lhg3fkkt9o7hc5g3vr85l.apps.googleusercontent.com',
+        scopes: scopes,
       ).signIn();
     } catch (error) {
       print(error);
     }
 
-    if(googleUser == null || googleUser.serverAuthCode == ''){
+    googleUser?.authentication.then((googleKey){
+      print('accessToken');
+        print(googleKey.accessToken);
+      print('idToken');
+        print(googleKey.idToken);
+    }).catchError((err){
+        print('inner error');
+    });
+
+    if(googleUser == null ){
       print('googleUser is null');
       throw Exception('googleUser is null');
     }
 
-    print('googleUser');
-    print(googleUser.serverAuthCode);
+    final googleKey = await googleUser.authentication;
+    final googleAccessToken = googleKey.accessToken;
+
+    if(googleAccessToken == null){
+      print('googleAccessToken is null');
+      throw Exception('googleAccessToken is null');
+    }
+
+    print('googleAccessToken');
+    print(googleAccessToken);
+    
     final api = await Api.createFirstTime();
-    final accessTokenFetched = await api.authGoogle(googleUser.serverAuthCode ?? '');
+    final accessTokenFetched = await api.authGoogle(googleAccessToken);
     if(accessTokenFetched){
       await api.makeSubscription();
       Navigator.pushReplacement(

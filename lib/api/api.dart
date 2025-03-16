@@ -296,7 +296,7 @@ class Api {
 
   Future<bool> authGoogle(String token) async {
     final data = {
-      'code': token,
+      'accessToken': token,
     };
 
     try{

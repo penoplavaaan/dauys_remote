@@ -41,7 +41,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: Column(
         children: [
           const TopSpacer(),
-          AuthTopPanel(title: 'Настройки', screenId: 2,),
+          const AuthTopPanel(title: 'Настройки', screenId: 2,),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 50),

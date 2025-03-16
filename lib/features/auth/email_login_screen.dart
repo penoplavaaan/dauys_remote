@@ -3,12 +3,12 @@ import 'package:dauys_remote/core/constants/regex.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/core/widget/app_text_input.dart';
+import 'package:dauys_remote/features/auth/auth_geateway_screen.dart';
 import 'package:dauys_remote/features/auth/widget/auth_top_panel.dart';
 import 'package:dauys_remote/features/auth/widget/password_input.dart';
+import 'package:dauys_remote/features/gateway/gateway_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../gateway/gateway_screen.dart';
 
 class EmailLoginScreen extends StatefulWidget {
   const EmailLoginScreen({super.key});
@@ -64,7 +64,16 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
     return AppScaffold(
       body: Column(
         children: [
-          const AuthTopPanel(title: 'Новый аккаунт'),
+          AuthTopPanel(
+            title: 'Войти',
+            onBack: () => {
+              print('back'),
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const AuthGeatewayScreen()),
+              )
+            },
+          ),
           const SizedBox(height: 40),
           Form(
             key: _formKey,

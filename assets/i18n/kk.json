@@ -11,7 +11,11 @@
     "application": "ҚОСЫМША",
     "change_language": "Тілді өзгерту",
     "terms_of_use": "Пайдалану шарттары",
-    "privacy_policy": "Жекелік саясат"
+    "privacy_policy": "Жекелік саясат",
+    "devices": {
+      "no_devices": "Байланысқан құрылғылар жоқ",
+      "last_connection": "Соңғы байланыс: "
+    }
   },
   "profile": {
     "premium_user": "Премиум пайдаланушы",
@@ -61,17 +65,18 @@
     "empty_message": "Таңдаулыларда ештеңе жоқ. \nӘндерді қосып көріңіз, олар осы экранда пайда болады!"
   },
   "song_preview": {
-    "select_mode": "Режимді таңдау",
-    "one_microphone": "1 микрофон",
+    "select_mode": "Режимді таңдаңыз",
+    "one_microphone": "1 Микрофон",
     "classic_mode": "Классикалық режим",
-    "two_microphones": "2 микрофон",
-    "competition_mode": "Достармен бәсекелестік режимі!",
+    "two_microphones": "2 Микрофон",
+    "competition_mode": "Достармен жарысу режимі!",
     "start": "Бастау",
     "connect_device": "Құрылғыны қосу",
     "searching_devices": "Құрылғыларды іздеу",
     "searching_dauys_box": "Dauys Karaoke Box іздеу",
-    "error": "Қате",
-    "text": "Мәтін"
+    "error": "Қате: {0}",
+    "text": "Мәтін",
+    "connection_failed": "Құрылғыға қосылу мүмкін болмады"
   },
   "bottom_navigation": {
     "home": "Басты бет",

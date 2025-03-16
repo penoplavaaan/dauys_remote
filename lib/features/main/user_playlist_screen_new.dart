@@ -35,7 +35,7 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
   Widget build(BuildContext context) {
     UserCollection userCollection = widget.collection;
 
-    Future<void> _showMyDialog(int index, BuildContext context) async {
+    Future<void> showMyDialog(int index, BuildContext context) async {
       return showDialog<void>(
         context: context,
         barrierDismissible: false, // user must tap button!
@@ -62,7 +62,7 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(FlutterI18n.translate(context, "playlist.song_removed"))), // заменено
                         );
-                      };
+                      }
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => const GateWayScreen(index: 2)),
@@ -188,7 +188,7 @@ class _UserPlaylistScreenNewState extends State<UserPlaylistScreenNew> {
                       );
                     },
                     onLongTap: () async {
-                      await _showMyDialog(index, context);
+                      await showMyDialog(index, context);
                       print('long tap');
                     },
                   ),

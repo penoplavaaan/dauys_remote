@@ -3,7 +3,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 extension IntToRussianString on int {
   String toSongString(BuildContext context) {
-    Locale locale = FlutterI18n.currentLocale(context) ?? Locale('ru');
+    Locale locale = FlutterI18n.currentLocale(context) ?? const Locale('ru');
     int number = this;
 
     switch (locale.languageCode) {

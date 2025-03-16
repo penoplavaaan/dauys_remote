@@ -1,5 +1,4 @@
 import 'package:dauys_remote/api/api.dart';
-import 'package:dauys_remote/core/constants/regex.dart';
 import 'package:dauys_remote/core/widget/app_button.dart';
 import 'package:dauys_remote/core/widget/app_scaffold.dart';
 import 'package:dauys_remote/core/widget/app_text_input.dart';

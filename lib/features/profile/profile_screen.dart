@@ -361,13 +361,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileTile(
                           title: FlutterI18n.translate(context, "profile.my_data"),
                           icon: AppIcons.clowd,
-                          page: MyDataScreen(),
+                          page: const MyDataScreen(),
                         ),
                         const SizedBox(width: 10),
                         ProfileTile(
                           title: FlutterI18n.translate(context, "profile.favorites"),
                           icon: AppIcons.starOutlined,
-                          page: FavoritesScreen(),
+                          page: const FavoritesScreen(),
                         ),
                         const SizedBox(width: 16),
                       ],
@@ -379,13 +379,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileTile(
                           title: FlutterI18n.translate(context, "profile.history"),
                           icon: AppIcons.history,
-                          page: HistoryScreen(),
+                          page: const HistoryScreen(),
                         ),
                         const SizedBox(width: 10),
                         ProfileTile(
                           title: FlutterI18n.translate(context, "profile.my_playlists"),
                           icon: AppIcons.record,
-                          page: MyPlaylistsScreen(),
+                          page: const MyPlaylistsScreen(),
                         ),
                         const SizedBox(width: 16),
                       ],
@@ -397,7 +397,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ProfileTile(
                           title: FlutterI18n.translate(context, "profile.settings"),
                           icon: AppIcons.settings,
-                          page: SettingsScreen(),
+                          page: const SettingsScreen(),
                         ),
                         const SizedBox(width: 16),
                       ],

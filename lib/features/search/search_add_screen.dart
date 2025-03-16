@@ -15,7 +15,6 @@ import '../../core/widget/app_button.dart';
 import '../../models/search_results.dart';
 import '../../storage/local_storage.dart';
 import '../gateway/gateway_screen.dart';
-import '../main/song_preview_screen_new.dart';
 import '../main/widget/playlist_item_new.dart';
 
 class SearchAddScreen extends StatefulWidget {

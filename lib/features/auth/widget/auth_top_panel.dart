@@ -9,12 +9,14 @@ class AuthTopPanel extends StatelessWidget {
     super.key,
     required this.title,
     this.action,
-    this.screenId
+    this.screenId,
+    this.onBack,
   });
 
   final String title;
   final Widget? action;
   final int? screenId;
+  final Function()? onBack;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class AuthTopPanel extends StatelessWidget {
         children: [
           const SizedBox(width: 10),
           GestureDetector(
-            onTap: () =>  Navigator.pushReplacement(
+            onTap: () => onBack != null ? onBack!() : Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => GateWayScreen(index: screenId?? 0)),
             ),

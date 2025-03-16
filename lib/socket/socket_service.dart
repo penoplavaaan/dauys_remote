@@ -77,7 +77,7 @@ class SocketService {
   }
 
   bool isConnected() {
-    return client.isActive;
+    return _isConnected && client.isActive;
   }
 
   void onConnect(StompFrame frame) {
@@ -90,9 +90,8 @@ class SocketService {
       },
     );
 
+    _isConnected = false;
     sendHandshake();
-    // mockSuccessHandshake();
-    // beforePlay();
   }
 
   parseIncomingMessage(String message){
@@ -267,7 +266,7 @@ class SocketService {
         'deviceId' : deviceId
       }
     });
-    Future.delayed(Duration(seconds: 3), (){
+    Future.delayed(const Duration(seconds: 3), (){
       send({
         'message': {
           'type': incomingMessageTypePlay,
@@ -279,7 +278,7 @@ class SocketService {
         }
       });
     });
-    Future.delayed(Duration(seconds: 9), (){
+    Future.delayed(const Duration(seconds: 9), (){
       send({
         'message': {
           'type': incomingMessageTypePlay,
@@ -291,7 +290,7 @@ class SocketService {
         }
       });
     });
-    Future.delayed(Duration(seconds: 15), (){
+    Future.delayed(const Duration(seconds: 15), (){
       send({
         'message': {
           'type': incomingMessageTypePlay,
