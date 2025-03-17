@@ -108,5 +108,17 @@
     "no": "Нет",
     "song_removed": "Песня удалена из плейлиста",
     "really_delete": "Вы точно хотите удалить песню из плейлиста?"
+  },
+  "auth": {
+    "login": {
+      "title": "Войти",
+      "email_phone_hint": "Ваш эл. адрес или номер телефона",
+      "password_hint": "Ваш пароль",
+      "button": "Войти",
+      "email_phone_empty": "Введите email или телефон",
+      "invalid_phone": "Неправильный телефон",
+      "invalid_email": "Неправильный email",
+      "invalid_credentials": "Неверный email/телефон или пароль"
+    }
   }
 }

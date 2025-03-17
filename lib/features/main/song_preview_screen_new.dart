@@ -242,48 +242,54 @@ class _SongPreviewScreenNewState extends State<SongPreviewScreenNew> {
         onTap: () async {
           showDialog(
             context: context,
-            barrierDismissible: false,
+            barrierDismissible: true,
             builder: (BuildContext context) {
-              return Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.all(32),
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.darkGradientVertical,
-                    borderRadius: BorderRadius.circular(24),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.black.withOpacity(0.3),
-                        blurRadius: 20,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const PulsingLoader(),
-                      const SizedBox(height: 24),
-                      Text(
-                        FlutterI18n.translate(context, "song_preview.searching_devices"),
-                        style: AppStyles.magistral20w500.copyWith(
-                          color: AppColors.white,
-                          letterSpacing: 0.5,
-                          decoration: TextDecoration.none,
+              return WillPopScope(
+                onWillPop: () async {
+                  client.deactivate();
+                  return true;
+                },
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    padding: const EdgeInsets.all(32),
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.darkGradientVertical,
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.black.withOpacity(0.3),
+                          blurRadius: 20,
+                          spreadRadius: 5,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        FlutterI18n.translate(context, "song_preview.searching_dauys_box"),
-                        style: AppStyles.magistral14w400.copyWith(
-                          color: AppColors.white.withOpacity(0.6),
-                          letterSpacing: 0.3,
-                          decoration: TextDecoration.none,
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const PulsingLoader(),
+                        const SizedBox(height: 24),
+                        Text(
+                          FlutterI18n.translate(context, "song_preview.searching_devices"),
+                          style: AppStyles.magistral20w500.copyWith(
+                            color: AppColors.white,
+                            letterSpacing: 0.5,
+                            decoration: TextDecoration.none,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                        const SizedBox(height: 12),
+                        Text(
+                          FlutterI18n.translate(context, "song_preview.searching_dauys_box"),
+                          style: AppStyles.magistral14w400.copyWith(
+                            color: AppColors.white.withOpacity(0.6),
+                            letterSpacing: 0.3,
+                            decoration: TextDecoration.none,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

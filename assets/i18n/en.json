@@ -110,5 +110,17 @@
     "song_removed": "Song removed from playlist",
     "really_delete": "Are you sure you want to remove the song from the playlist?"
 
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "email_phone_hint": "Your email or phone number",
+      "password_hint": "Your password",
+      "button": "Sign In",
+      "email_phone_empty": "Enter email or phone number",
+      "invalid_phone": "Invalid phone number",
+      "invalid_email": "Invalid email",
+      "invalid_credentials": "Invalid email/phone or password"
+    }
   }
 }
